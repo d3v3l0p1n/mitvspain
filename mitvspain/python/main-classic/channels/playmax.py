@@ -43,7 +43,7 @@ def login():
         if user == "" and password == "":
             return False, "Para ver los enlaces de este canal es necesario registrarse en playmax.mx"
         elif user == "" or password == "":
-            return False, "Usuario o contraseÒa en blanco. Revisa tus credenciales"
+            return False, "Usuario o contrase√±a en blanco. Revisa tus credenciales"
 
         data = httptools.downloadpage("https://playmax.mx/ucp.php?mode=login").data
         if re.search(r'(?i)class="hb_user_data" title="%s"' % user, data):
@@ -56,15 +56,16 @@ def login():
 
         confirm_id = scrapertools.find_single_match(data, 'name="confirm_id" value="([^"]+)"')
         sid_log = scrapertools.find_single_match(data, 'name="sid" value="([^"]+)"')
+
         post = "username=%s&password=%s&autologin=on&agreed=true&change_lang=0&confirm_id=%s&login=&sid=%s" \
-               "&redirect=index.php&login=Entrar" % (user, password, confirm_id, sid_log)
+               "&redirect=index.php" % (user, password, confirm_id, sid_log)
         data = httptools.downloadpage("https://playmax.mx/ucp.php?mode=login", post=post).data
-        if "contraseÒa incorrecta" in data:
+        if "contrase√±a incorrecta" in data:
             logger.error("Error en el login")
-            return False, "ContraseÒa errÛnea. Comprueba tus credenciales"
+            return False, "Contrase√±a err√≥nea. Comprueba tus credenciales"
         elif "nombre de usuario incorrecto" in data:
             logger.error("Error en el login")
-            return False, "Nombre de usuario no v·lido. Comprueba tus credenciales"            
+            return False, "Nombre de usuario no v√°lido. Comprueba tus credenciales"            
         else:
             logger.info("Login correcto")
             sid_ = scrapertools.find_single_match(data, 'sid=([^"]+)"')
@@ -82,7 +83,7 @@ def login():
     except:
         import traceback
         logger.error(traceback.format_exc())
-        return False, "Error en el login. Comprueba tus credenciales o si la web est· operativa"
+        return False, "Error en el login. Comprueba tus credenciales o si la web est√° operativa"
 
 
 def mainlist(item):
@@ -97,21 +98,21 @@ def mainlist(item):
         itemlist.append(item.clone(title=error_message, action="configuracion", folder=False))
         return itemlist
 
-    itemlist.append(item.clone(title="PelÌculas", action="", text_color=color2))
+    itemlist.append(item.clone(title="Pel√≠culas", action="", text_color=color2))
     item.contentType = "movie"
     itemlist.append(item.clone(title="     Novedades", action="fichas", url=host+"/catalogo.php?tipo[]=2&ad=2&ordenar="
                                                                                  "novedades&con_dis=on"))
     itemlist.append(item.clone(title="     Populares", action="fichas", url=host+"/catalogo.php?tipo[]=2&ad=2&ordenar="
                                                                                  "pop&con_dis=on"))
-    itemlist.append(item.clone(title="     Õndices", action="indices"))
+    itemlist.append(item.clone(title="     √çndices", action="indices"))
 
     itemlist.append(item.clone(title="Series", action="", text_color=color2))
     item.contentType = "tvshow"
-    itemlist.append(item.clone(title="     Nuevos capÌtulos", action="fichas", url=host+"/catalogo.php?tipo[]=1&ad=2&"
+    itemlist.append(item.clone(title="     Nuevos cap√≠tulos", action="fichas", url=host+"/catalogo.php?tipo[]=1&ad=2&"
                                                                                         "ordenar=novedades&con_dis=on"))
     itemlist.append(item.clone(title="     Nuevas series", action="fichas", url=host+"/catalogo.php?tipo[]=1&ad=2&"
-                                                                                     "ordenar=aÒo&con_dis=on"))
-    itemlist.append(item.clone(title="     Õndices", action="indices"))
+                                                                                     "ordenar=a√±o&con_dis=on"))
+    itemlist.append(item.clone(title="     √çndices", action="indices"))
 
     item.contentType = "movie"
     itemlist.append(item.clone(title="Documentales", action="fichas", text_color=color2,
@@ -120,7 +121,7 @@ def mainlist(item):
                                url=host+"/listas.php?apikey=%s&sid=%s&start=0" % (apikey, sid), extra="listas"))
     itemlist.append(item.clone(action="search", title="Buscar...", text_color=color2))
     itemlist.append(item.clone(action="acciones_cuenta", title="Tus fichas", text_color=color4))
-    itemlist.append(item.clone(title="ConfiguraciÛn del canal", action="configuracion", text_color="gold"))
+    itemlist.append(item.clone(title="Configuraci√≥n del canal", action="configuracion", text_color="gold"))
 
     return itemlist
 
@@ -142,9 +143,10 @@ def busqueda(item):
     itemlist = []
 
     data = httptools.downloadpage(item.url).data
-    data = json.Xml2Json(data).result
+    data = json.xmlTojson(None, data)
 
     for f in data["Data"]["Fichas"]["Ficha"]:
+        f['Title'] =  scrapertools.find_single_match(f['Title'], '<!\[CDATA\[(.+?)\]\]>')
         title = "%s  (%s)" % (f["Title"], f["Year"])
         infolab = {'year': f["Year"]}
         thumbnail = f["Poster"]
@@ -172,7 +174,7 @@ def busqueda(item):
     actualpage = int(scrapertools.find_single_match(item.url, "start=(\d+)"))
     if actualpage + 20 < total:
         next_page = item.url.replace("start=%s" % actualpage, "start=%s" % (actualpage+20))
-        itemlist.append(Item(channel=item.channel, action="busqueda", title=">> P·gina Siguiente",
+        itemlist.append(Item(channel=item.channel, action="busqueda", title=">> P√°gina Siguiente",
                              url=next_page, thumbnail=item.thumbnail))
 
     return itemlist
@@ -218,7 +220,7 @@ def newest(categoria):
             if itemlist[-1].action == "fichas":
                 itemlist.pop()
 
-    # Se captura la excepciÛn, para no interrumpir al canal novedades si un canal falla
+    # Se captura la excepci√≥n, para no interrumpir al canal novedades si un canal falla
     except:
         import sys
         for line in sys.exc_info():
@@ -235,24 +237,24 @@ def indices(item):
     tipo = "2"
     if item.contentType == "tvshow":
         tipo = "1"
-    if "Õndices" in item.title:
+    if "√çndices" in item.title:
         if item.contentType == "tvshow":
             itemlist.append(item.clone(title="Populares", action="fichas", url=host+"/catalogo.php?tipo[]=1&ad=2&"
                                                                                     "ordenar=pop&con_dis=on"))
-        itemlist.append(item.clone(title="M·s vistas", action="fichas", url=host+"/catalogo.php?tipo[]=%s&ad=2&"
+        itemlist.append(item.clone(title="M√°s vistas", action="fichas", url=host+"/catalogo.php?tipo[]=%s&ad=2&"
                                                                                  "ordenar=siempre&con_dis=on" % tipo))
         itemlist.append(item.clone(title="Mejor valoradas", action="fichas", url=host+"/catalogo.php?tipo[]=%s&ad=2&"
                                                                                  "ordenar=valoracion&con_dis=on" % tipo))
-        itemlist.append(item.clone(title="GÈneros", url=host+"/catalogo.php"))
+        itemlist.append(item.clone(title="G√©neros", url=host+"/catalogo.php"))
         itemlist.append(item.clone(title="Idiomas", url=host+"/catalogo.php"))
         if item.contentType == "movie":
             itemlist.append(item.clone(title="Por calidad", url=host+"/catalogo.php"))
-        itemlist.append(item.clone(title="Por aÒo"))
-        itemlist.append(item.clone(title="Por paÌs", url=host+"/catalogo.php"))
+        itemlist.append(item.clone(title="Por a√±o"))
+        itemlist.append(item.clone(title="Por pa√≠s", url=host+"/catalogo.php"))
 
         return itemlist
 
-    if "GÈneros" in item.title:
+    if "G√©neros" in item.title:
         data = httptools.downloadpage(item.url).data
         patron = '<div class="sel gen" value="([^"]+)">([^<]+)</div>'
         matches = scrapertools.find_multiple_matches(data, patron)
@@ -275,9 +277,9 @@ def indices(item):
         for value, calidad in matches:
             url = item.url + "?tipo[]=%s&ad=2&ordenar=novedades&con_dis=on&e_calidad=%s" % (tipo, value)
             itemlist.append(item.clone(action="fichas", title=calidad, url=url))
-    elif "paÌs" in item.title:
+    elif "pa√≠s" in item.title:
         data = httptools.downloadpage(item.url).data
-        bloque = scrapertools.find_single_match(data, 'oname="PaÌs">Todos(.*?)<input')
+        bloque = scrapertools.find_single_match(data, 'oname="Pa√≠s">Todos(.*?)<input')
         patron = '<div class="sel" value="([^"]+)">([^<]+)</div>'
         matches = scrapertools.find_multiple_matches(bloque, patron)
         for value, pais in matches:
@@ -287,7 +289,7 @@ def indices(item):
         from datetime import datetime
         year = datetime.now().year
         for i in range(year, 1899, -1):
-            url = "%s/catalogo.php?tipo[]=%s&del=%s&al=%s&aÒo=personal&ad=2&ordenar=novedades&con_dis=on" \
+            url = "%s/catalogo.php?tipo[]=%s&del=%s&al=%s&a√±o=personal&ad=2&ordenar=novedades&con_dis=on" \
                   % (host, tipo, i, i)
             itemlist.append(item.clone(action="fichas", title=str(i), url=url))
 
@@ -311,6 +313,7 @@ def fichas(item):
         if not "-dc=" in scrapedurl:
             scrapedurl += "-dc="
         scrapedthumbnail = host + scrapedthumbnail
+
         action = "findvideos"
         if __menu_info__:
             action = "menu_info"
@@ -347,7 +350,7 @@ def fichas(item):
     next_page = scrapertools.find_single_match(data, 'href="([^"]+)" class="next"')
     if next_page:
         next_page = host + next_page.replace("&amp;", "&")
-        itemlist.append(Item(channel=item.channel, action="fichas", title=">> P·gina Siguiente", url=next_page))
+        itemlist.append(Item(channel=item.channel, action="fichas", title=">> P√°gina Siguiente", url=next_page))
 
         try:
             total = int(scrapertools.find_single_match(data, '<span class="page-dots">.*href.*?>(\d+)'))
@@ -355,7 +358,7 @@ def fichas(item):
             total = 0
         if not config.get_setting("last_page", item.channel) and config.is_xbmc() and total > 2 \
                 and item.extra != "newest":
-            itemlist.append(item.clone(action="select_page", title="Ir a p·gina... (Total:%s)" % total, url=next_page,
+            itemlist.append(item.clone(action="select_page", title="Ir a p√°gina... (Total:%s)" % total, url=next_page,
                                        text_color=color5))
 
     return itemlist
@@ -365,7 +368,7 @@ def episodios(item):
     logger.info()
     itemlist = []
 
-    # Descarga la p·gina
+    # Descarga la p√°gina
     data = httptools.downloadpage(item.url).data
     data = re.sub(r"\n|\r|\t|\s{2}|&nbsp;|<br>", "", data)
 
@@ -409,7 +412,7 @@ def episodios(item):
 
     library_path = config.get_library_path()
     if config.get_library_support() and not item.extra:
-        title = "AÒadir serie a la biblioteca"
+        title = "A√±adir serie a la biblioteca"
         if item.infoLabels["imdb_id"] and not library_path.lower().startswith("smb://"):
             try:
                 from core import filetools
@@ -427,13 +430,13 @@ def episodios(item):
                             if "playmax" in canales:
                                 canales.pop(canales.index("playmax"))
                                 canales.insert(0, "[COLOR red]playmax[/COLOR]")
-                            title = "Serie ya en tu biblioteca. [%s] øAÒadir?" % ",".join(canales)
+                            title = "Serie ya en tu biblioteca. [%s] ¬øA√±adir?" % ",".join(canales)
                             break
             except:
                 import traceback
                 logger.error(traceback.format_exc())
                 pass
-        
+
         itemlist.append(item.clone(action="add_serie_to_library", title=title, text_color=color5,
                                    extra="episodios###library"))
     if itemlist and not __menu_info__:
@@ -448,10 +451,10 @@ def findvideos(item):
     itemlist = []
 
     if item.contentType == "movie":
-        # Descarga la p·gina
+        # Descarga la p√°gina
         data = httptools.downloadpage(item.url).data
         data = re.sub(r"\n|\r|\t|\s{2}|&nbsp;|<br>", "", data)
-        
+
         if not item.infoLabels["tmdb_id"]:
             item.infoLabels["tmdb_id"] = scrapertools.find_single_match(data, '<a href="https://www.themoviedb.org/'
                                                                               '[^/]+/(\d+)')
@@ -474,7 +477,7 @@ def findvideos(item):
 
     url = "https://playmax.mx/c_enlaces_n.php?apikey=%s&sid=%s&ficha=%s&cid=%s" % (apikey, sid, ficha, cid)
     data = httptools.downloadpage(url).data
-    data = json.Xml2Json(data).result
+    data = json.xmlTojson(None, data)
 
     for k, v in data["Data"].items():
         try:
@@ -496,7 +499,7 @@ def findvideos(item):
                     title = "   %s - %s/%s" % (it['Host'].capitalize(), it['Quality'], it['Lang'])
                     calidad = int(scrapertools.find_single_match(it['Quality'], '(\d+)p'))
                     calidadaudio = it['QualityA'].replace("...", "")
-                    subtitulos = it['Subtitles'].replace("Sin subtÌtulos", "")
+                    subtitulos = it['Subtitles'].replace("Sin subt√≠tulos", "")
                     if subtitulos:
                         title += " (%s)" % subtitulos
                     if calidadaudio:
@@ -540,7 +543,7 @@ def findvideos(item):
 
     if not itemlist:
         itemlist.append(item.clone(action="", title="No hay enlaces disponibles"))
-            
+
     return itemlist
 
 
@@ -563,11 +566,11 @@ def menu_info(item):
     title = "Ver enlaces"
     if item.contentType == "tvshow":
         action = "episodios"
-        title = "Ver capÌtulos"
+        title = "Ver cap√≠tulos"
     itemlist.append(item.clone(action=action, title=title))
 
     carpeta = "CINE"
-    tipo = "pelÌcula"
+    tipo = "pel√≠cula"
     action = "add_pelicula_to_library"
     extra = ""
     if item.contentType == "tvshow":
@@ -578,7 +581,7 @@ def menu_info(item):
 
     library_path = config.get_library_path()
     if config.get_library_support():
-        title = "AÒadir %s a la biblioteca" % tipo
+        title = "A√±adir %s a la biblioteca" % tipo
         if item.infoLabels["imdb_id"] and not library_path.lower().startswith("smb://"):
             try:
                 from core import filetools
@@ -597,7 +600,7 @@ def menu_info(item):
                             if "playmax" in canales:
                                 canales.pop(canales.index("playmax"))
                                 canales.insert(0, "[COLOR red]playmax[/COLOR]")
-                            title = "%s ya en tu biblioteca. [%s] øAÒadir?" % (tipo.capitalize(), ",".join(canales))
+                            title = "%s ya en tu biblioteca. [%s] ¬øA√±adir?" % (tipo.capitalize(), ",".join(canales))
                             break
             except:
                 import traceback
@@ -613,7 +616,7 @@ def menu_info(item):
             extra = "tv"
         itemlist.append(item.clone(channel="tvmoviedb", title="[Trakt] Gestionar con tu cuenta", action="menu_trakt",
                                    extra=extra))
-    itemlist.append(item.clone(channel="trailertools", action="buscartrailer", title="Buscar Tr·iler",
+    itemlist.append(item.clone(channel="trailertools", action="buscartrailer", title="Buscar Tr√°iler",
                                text_color="magenta", context=""))
 
     itemlist.append(item.clone(action="", title=""))
@@ -622,8 +625,8 @@ def menu_info(item):
         ficha = scrapertools.find_single_match(item.url, 'f=(\d+)')
 
     itemlist.extend(acciones_fichas(item, sid, ficha, season=True))
-    itemlist.append(item.clone(action="acciones_cuenta", title="AÒadir a una lista", text_color=color3, ficha=ficha))
-    
+    itemlist.append(item.clone(action="acciones_cuenta", title="A√±adir a una lista", text_color=color3, ficha=ficha))
+
     return itemlist
 
 
@@ -634,7 +637,7 @@ def acciones_fichas(item, sid, ficha, season=False):
     estados = [{'following': 'seguir'}, {'favorite': 'favorita'}, {'view': 'vista'}, {'slope': 'pendiente'}]
     url = "https://playmax.mx/ficha.php?apikey=%s&sid=%s&f=%s" % (apikey, sid, ficha)
     data = httptools.downloadpage(url).data
-    data = json.Xml2Json(data).result
+    data = json.xmlTojson(None, data)
 
     try:
         marked = data["Data"]["User"]["Marked"]
@@ -643,14 +646,14 @@ def acciones_fichas(item, sid, ficha, season=False):
                 if int(epi["Episode"]) == new_item.infoLabels["episode"]:
                     epi_marked = epi["EpisodeViewed"].replace("yes", "ya")
                     epi_id = epi["Id"]
-                    marcarlist.append(new_item.clone(action="marcar", title="CapÌtulo %s visto. øCambiar?" % epi_marked,
+                    marcarlist.append(new_item.clone(action="marcar", title="Cap√≠tulo %s visto. ¬øCambiar?" % epi_marked,
                                                  text_color=color3, epi_id=epi_id))
                     break
     except:
         pass
 
     try:
-        tipo = new_item.contentType.replace("movie", "PelÌcula").replace("episode", "Serie").replace("tvshow", "Serie")
+        tipo = new_item.contentType.replace("movie", "Pel√≠cula").replace("episode", "Serie").replace("tvshow", "Serie")
         for status in estados:
             for k, v in status.items():
                 if k != marked:
@@ -659,7 +662,7 @@ def acciones_fichas(item, sid, ficha, season=False):
                 else:
                     title = "%s marcada como %s" % (tipo, v)
                     action = ""
-                if k == "following" and tipo == "PelÌcula":
+                if k == "following" and tipo == "Pel√≠cula":
                     continue
                 elif k == "following" and tipo == "Serie":
                     title = title.replace("seguir", "seguida")
@@ -685,7 +688,7 @@ def acciones_fichas(item, sid, ficha, season=False):
                     continue
                 elif type(v["Item"]) is not list:
                     v["Item"] = [v["Item"]]
-                    
+
                 for epi in v["Item"]:
                     if epi["EpisodeViewed"] == "no":
                         vistos = True
@@ -694,7 +697,7 @@ def acciones_fichas(item, sid, ficha, season=False):
                         break
 
                 if not vistos:
-                    seasonlist.append(new_item.clone(action="marcar", title="Temporada %s ya vista. øRevertir?" % season,
+                    seasonlist.append(new_item.clone(action="marcar", title="Temporada %s ya vista. ¬øRevertir?" % season,
                                                  text_color=color1, season=int(season), ficha=ficha, folder=False))
 
             seasonlist.sort(key=lambda it: it.season, reverse=True)
@@ -709,14 +712,14 @@ def acciones_cuenta(item):
     itemlist = []
 
     if "Tus fichas" in item.title:
-        itemlist.append(item.clone(title="CapÌtulos", url="tf_block_c a", contentType="tvshow"))
+        itemlist.append(item.clone(title="Cap√≠tulos", url="tf_block_c a", contentType="tvshow"))
         itemlist.append(item.clone(title="Series", url="tf_block_s", contentType="tvshow"))
-        itemlist.append(item.clone(title="PelÌculas", url="tf_block_p"))
+        itemlist.append(item.clone(title="Pel√≠culas", url="tf_block_p"))
         itemlist.append(item.clone(title="Documentales", url="tf_block_d"))
         return itemlist
-    elif "AÒadir a una lista" in item.title:
+    elif "A√±adir a una lista" in item.title:
         data = httptools.downloadpage(host+"/c_listas.php?apikey=%s&sid=%s" % (apikey, sid)).data
-        data = json.Xml2Json(data).result
+        data = json.xmlTojson(None, data)
         itemlist.append(item.clone(title="Crear nueva lista", folder=False))
         if data["Data"]["TusListas"] != "\t":
             import random
@@ -725,6 +728,8 @@ def acciones_cuenta(item):
                 data = [data]
             for child in data:
                 image = ""
+                
+                child['Title'] =  scrapertools.find_single_match(child['Title'], '<!\[CDATA\[(.+?)\]\]>')
                 title = "%s (%s fichas)" % (child["Title"], child["FichasInList"])
                 images = []
                 for i in range(1, 5):
@@ -741,8 +746,8 @@ def acciones_cuenta(item):
         from platformcode import platformtools
         nombre = platformtools.dialog_input("", "Introduce un nombre para la lista")
         if nombre:
-            dict_priv = {0: 'P˙blica', 1: 'Privada'}
-            priv = platformtools.dialog_select("Privacidad de la lista", ['P˙blica', 'Privada'])
+            dict_priv = {0: 'P√∫blica', 1: 'Privada'}
+            priv = platformtools.dialog_select("Privacidad de la lista", ['P√∫blica', 'Privada'])
             if priv != -1:
                 url = host + "/data.php?mode=create_list&apikey=%s&sid=%s" % (apikey, sid)
                 post = "name=%s&private=%s" % (nombre, priv)
@@ -753,15 +758,15 @@ def acciones_cuenta(item):
     elif re.search(r"(?i)Seguir Lista", item.title):
         from platformcode import platformtools
         data = httptools.downloadpage(item.url)
-        platformtools.dialog_notification("OperaciÛn realizada con Èxito", "Lista: %s" % item.lista)
+        platformtools.dialog_notification("Operaci√≥n realizada con √©xito", "Lista: %s" % item.lista)
         return
     elif item.post:
         from platformcode import platformtools
         data = httptools.downloadpage(item.url, item.post).data
-        platformtools.dialog_notification("Ficha aÒadida a la lista", "Lista: %s" % item.title)
+        platformtools.dialog_notification("Ficha a√±adida a la lista", "Lista: %s" % item.title)
         platformtools.itemlist_refresh()
         return
-        
+
     data = httptools.downloadpage("https://playmax.mx/tusfichas.php").data
     data = re.sub(r"\n|\r|\t|\s{2}|&nbsp;|<br>", "", data)
 
@@ -803,9 +808,9 @@ def acciones_cuenta(item):
 def marcar(item):
     logger.info()
 
-    if "CapÌtulo" in item.title:
+    if "Cap√≠tulo" in item.title:
         url = "%s/data.php?mode=capitulo_visto&apikey=%s&sid=%s&c_id=%s" % (host, apikey, sid, item.epi_id)
-        message = item.title.replace("no", "marcado como").replace("ya", "cambiado a no").replace(" øCambiar?", "")
+        message = item.title.replace("no", "marcado como").replace("ya", "cambiado a no").replace(" ¬øCambiar?", "")
     elif "temporada" in item.title.lower():
         type_marcado = "1"
         if "como vista" in item.title:
@@ -836,7 +841,7 @@ def marcar(item):
     data = httptools.downloadpage(url)
     if data.sucess and config.get_platform() != "plex" and item.action != "play":
         from platformcode import platformtools
-        platformtools.dialog_notification("AcciÛn correcta", message)
+        platformtools.dialog_notification("Acci√≥n correcta", message)
 
 
 def listas(item):
@@ -844,11 +849,11 @@ def listas(item):
     itemlist = []
 
     data = httptools.downloadpage(item.url).data
-    data = json.Xml2Json(data).result
+    data = json.xmlTojson(None, data)
     if item.extra == "listas":
-        itemlist.append(Item(channel=item.channel, title="Listas m·s seguidas", action="listas", text_color=color1,
+        itemlist.append(Item(channel=item.channel, title="Listas m√°s seguidas", action="listas", text_color=color1,
                              url=item.url+"&orden=1", extra="listas_plus"))
-        itemlist.append(Item(channel=item.channel, title="Listas con m·s fichas", action="listas", text_color=color1,
+        itemlist.append(Item(channel=item.channel, title="Listas con m√°s fichas", action="listas", text_color=color1,
                              url=item.url+"&orden=2", extra="listas_plus"))
         itemlist.append(Item(channel=item.channel, title="Listas aleatorias", action="listas", text_color=color1,
                              url=item.url+"&orden=3", extra="listas_plus"))
@@ -873,6 +878,8 @@ def listas(item):
     import random
     for child in data:
         image = ""
+
+        child['Title'] =  scrapertools.find_single_match(child['Title'], '<!\[CDATA\[(.+?)\]\]>')
         title = "%s (%s fichas)" % (child["Title"], child["FichasInList"])
         images = []
         for i in range(1, 5):
@@ -888,7 +895,7 @@ def listas(item):
         start = scrapertools.find_single_match(item.url, 'start=(\d+)')
         end = int(start) + 20
         url = re.sub(r'start=%s' % start, 'start=%s' % end, item.url)
-        itemlist.append(item.clone(title=">> P·gina Siguiente", url=url))
+        itemlist.append(item.clone(title=">> P√°gina Siguiente", url=url))
 
     return itemlist
 
@@ -906,7 +913,7 @@ def play(item):
         if item.contentType == "movie":
             marcar(item.clone(title="marcar como vista"))
         else:
-            marcar(item.clone(title="CapÌtulo", epi_id=item.cid))
+            marcar(item.clone(title="Cap√≠tulo", epi_id=item.cid))
 
     return [item]
 
@@ -914,7 +921,7 @@ def play(item):
 def select_page(item):
     import xbmcgui
     dialog = xbmcgui.Dialog()
-    number = dialog.numeric(0, "Introduce el n˙mero de p·gina")
+    number = dialog.numeric(0, "Introduce el n√∫mero de p√°gina")
     if number != "":
         number = int(number) * 60
         item.url = re.sub(r'start=(\d+)', "start=%s" % number, item.url)

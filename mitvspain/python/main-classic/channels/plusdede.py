@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta - XBMC Plugin
 # Canal Plusdede
-# https://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
 # ------------------------------------------------------------
 
 import os
@@ -233,12 +231,12 @@ def parse_mixed_results(item,data):
     patron += '.*?<div class="year">([^<]+)</div>+'
     patron += '.*?<div class="value"><i class="fa fa-star"></i> ([^<]+)</div>'
     matches = re.compile(patron,re.DOTALL).findall(data)
-
+    logger.debug("PARSE_DATA:"+data)
     if item.tipo == "lista":
-        following = scrapertools.find_single_match(data, '<div class="follow-lista-buttons model([^"]+)" data-model="10"')
+        following = scrapertools.find_single_match(data, '<div class="follow-lista-buttons ([^"]+)">')
         data_id = scrapertools.find_single_match(data, 'data-model="10" data-id="([^"]+)">')
         if following.strip() == "following":
-            itemlist.append( Item(channel='plusdede', title="Dejar de seguir", idtemp=data_id, token=item.token, valor="unfollow", action="plusdede_check", url=item.url, tipo=item.tipo ))
+            itemlist.append( Item(channel='plusdede', title="Dejar de seguir", idtemp=data_id, token=item.token, valor="unfollow", action="plusdede_check", url=item.url, tipo=item.tipo))
         else:
             itemlist.append( Item(channel='plusdede', title="Seguir esta lista", idtemp=data_id, token=item.token, valor="follow", action="plusdede_check", url=item.url, tipo=item.tipo))
 
@@ -285,7 +283,7 @@ def parse_mixed_results(item,data):
         url = urlparse.urljoin("https://www.plusdede.com", next_page).replace("amp;","")
         logger.debug("URL_SIGUIENTE:"+url)
         itemlist.append(
-                Item(channel=item.channel, action="pag_sig", title=">> Página siguiente", extra=item.extra, url=url))
+                Item(channel=item.channel, action="pag_sig", token=item.token, title=">> Página siguiente", extra=item.extra, url=url))
 
 
     try:
@@ -388,7 +386,7 @@ def peliculas(item):
     # Descarga la pagina
     headers = {"X-Requested-With": "XMLHttpRequest"}
     data = httptools.downloadpage(item.url, headers=headers).data
-    #logger.debug("data_DEF_PELICULAS="+data)
+    logger.debug("data_DEF_PELICULAS="+data)
 
     # Extrae las entradas (carpetas)
     json_object = jsontools.load_json(data)
@@ -497,7 +495,7 @@ def parse_listas(item, bloque_lista):
     nextpage = scrapertools.find_single_match(bloque_lista,'<div class="onclick load-more-icon no-json" data-action="replace" data-url="([^"]+)"')
     if nextpage != '':
         url = urlparse.urljoin("https://www.plusdede.com",nextpage)
-        itemlist.append( Item(channel=item.channel, action="lista_sig", tipo=item.tipo , title=">> Página siguiente" , extra=item.extra, url=url))
+        itemlist.append( Item(channel=item.channel, action="lista_sig", token=item.token, tipo=item.tipo , title=">> Página siguiente" , extra=item.extra, url=url))
 
     try:
         import xbmcplugin
@@ -547,7 +545,7 @@ def pag_sig(item):
     headers = {"X-Requested-With": "XMLHttpRequest"}
     data = httptools.downloadpage(item.url, headers=headers).data
     logger.debug("data="+data)
-
+ 
     return parse_mixed_results(item,data)
 
 def findvideos(item, verTodos=False):
@@ -555,7 +553,7 @@ def findvideos(item, verTodos=False):
 
     # Descarga la pagina
     data = httptools.downloadpage(item.url).data
-    logger.info(data)
+    logger.info("URL:"+item.url+" DATA="+data)
     #logger.debug("data="+data)
 
     data_model=scrapertools.find_single_match(data,'data-model="([^"]+)"')
@@ -565,10 +563,10 @@ def findvideos(item, verTodos=False):
     url="https://www.plusdede.com/aportes/"+data_model+"/"+data_id+"?popup=1"
 
     data = httptools.downloadpage(url).data
-    #logger.debug("dataLINKS"+data)
+    logger.debug("URL:"+url+" dataLINKS="+data)
     token = scrapertools.find_single_match(data, '_token" content="([^"]+)"')
 
-    patron  = '<a target="_blank" (.*?)</a>'
+    patron  = 'target="_blank" (.*?)</a>'
     matches = re.compile(patron,re.DOTALL).findall(data)
     itemlist = []
 
@@ -869,7 +867,7 @@ def plusdede_check(item):
         return itemlist
     else:
 
-        if item.tipo == "10":
+        if item.tipo == "10" or item.tipo == "lista":
             url_temp = "https://www.plusdede.com/set/lista/"+item.idtemp+"/"+item.valor
         else:
             if (item.tipo_esp == "add_list"):
@@ -885,7 +883,7 @@ def plusdede_check(item):
             tipo_str = "pelis"
         headers = {"Referer": "https://www.plusdede.com/"+tipo_str, "X-Requested-With": "XMLHttpRequest", "X-CSRF-TOKEN": item.token}
         data = httptools.downloadpage(url_temp, post="id="+item.idtemp, headers=headers, replace_headers=True).data.strip()
-        logger.debug("URL_PLUSDEDECHECK_DATA"+url_temp)
+        logger.debug("URL_PLUSDEDECHECK_DATA="+url_temp+" ITEM:TIPO="+item.tipo)
         logger.debug("PLUSDEDECHECK_DATA="+data)
         dialog = platformtools
         dialog.ok = platformtools.dialog_ok
