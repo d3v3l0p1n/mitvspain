@@ -32,7 +32,7 @@ import jsontools
 import logger
 
 
-DEFAULT_UPDATE_URL = "https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//"
+DEFAULT_UPDATE_URL = "https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/"
 dict_channels_parameters = dict()
 
 

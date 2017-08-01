@@ -15,7 +15,7 @@
 	<thumbnail>https://s2.postimg.org/jivgi4ak9/doomtv.png</thumbnail>
 	<bannermenu>https://s32.postimg.org/6gxyripvp/doomtv_banner.png</bannermenu>
 	
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>6</version>
 
 	<changes>

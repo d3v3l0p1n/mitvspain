@@ -38,7 +38,7 @@
 	<thumbnail>http://s6.postimg.org/9zv90yjip/zentorrentlogo.jpg</thumbnail>
 	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/zentorrents.png</bannermenu>
 
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	
 	
 	<categories>

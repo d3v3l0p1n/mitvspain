@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta - XBMC Plugin
-# Canal para playmax
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# MiTvSpain - XBMC Plugin
+# Canal para mejortorrent
+
 # ------------------------------------------------------------
 
 import re

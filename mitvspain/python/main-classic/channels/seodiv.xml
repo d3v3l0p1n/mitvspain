@@ -15,7 +15,7 @@
 	<thumbnail>https://s32.postimg.org/gh8lhbkb9/seodiv.png</thumbnail>
 	<bannermenu>https://s31.postimg.org/klwjzp7t7/seodiv_banner.png</bannermenu>
 	
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>9</version>
 	<changes>
 		<change>

@@ -11,7 +11,7 @@
 	<thumbnail>http://i.imgur.com/wk6fRDZ.png</thumbnail>
 	<bannermenu>http://i.imgur.com/115c59F.png</bannermenu>
 
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>2</version>
 	
     <changes>

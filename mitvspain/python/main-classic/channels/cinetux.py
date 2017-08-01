@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta - XBMC Plugin
-# Canal para cinetux
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
-# ------------------------------------------------------------
+# MiTvSpain - XBMC Plugin
+# Canal para animeid
 
+# ------------------------------------------------------------
 import urllib
 import urlparse
 
@@ -15,7 +14,6 @@ from core import scrapertools
 from core import servertools
 from core import tmdb
 from core.item import Item
-
 
 CHANNEL_HOST = "http://www.cinetux.net/"
 
@@ -29,10 +27,9 @@ perfil = [['0xFFFFE6CC', '0xFFFFCE9C', '0xFF994D00'],
           ['0xFF58D3F7', '0xFF2E9AFE', '0xFF2E64FE']]
 color1, color2, color3 = perfil[__perfil__]
 
-fanart = "http://pelisalacarta.mimediacenter.info/fanart/cinetux.jpg"
+fanart = "https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/squares/cinetux.jpg"
 viewmode_options = {0: 'movie_with_plot', 1: 'movie', 2: 'list'}
 viewmode = viewmode_options[config.get_setting('viewmode', 'cinetux')]
-
 
 def mainlist(item):
     logger.info()
@@ -72,7 +69,6 @@ def mainlist(item):
     itemlist.append(item.clone(action="configuracion", title="Configurar canal...", text_color="gold", folder=False))
 
     return itemlist
-
 
 def configuracion(item):
     from platformcode import platformtools
@@ -190,7 +186,7 @@ def destacadas(item):
     data = httptools.downloadpage(item.url).data
 
     # Extrae las entradas (carpetas)
-    bloque = scrapertools.find_single_match(data, "peliculas_destacadas.*?login_box")
+    bloque = scrapertools.find_single_match(data, 'peliculas_destacadas.*?class="single-page')
     patron  = '(?s)title="([^"]+)"'
     patron += '.href="([^"]+)"'
     patron += '.*?src="([^"]+)'
@@ -367,7 +363,8 @@ def play(item):
     if "api.cinetux" in item.url:
         data = httptools.downloadpage(item.url, headers={'Referer': item.extra}).data.replace("\\", "")
         id = scrapertools.find_single_match(data, 'img src="[^#]+#(.*?)"')
-        return ytApiVideoInfo(id)
+        item.url = "https://youtube.googleapis.com/embed/?status=ok&hl=es&allow_embed=1&ps=docs&partnerid=30&hd=1&autoplay=0&cc_load_policy=1&showinfo=0&docid=" + id
+        itemlist = servertools.find_video_items(data = item.url)
     elif "links" in item.url:
         data = httptools.downloadpage(item.url).data
         scrapedurl = scrapertools.find_single_match(data, '<a href="(http[^"]+)')

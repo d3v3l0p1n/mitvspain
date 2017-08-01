@@ -38,8 +38,8 @@
 
 	<fanart></fanart>
 	<thumbnail>http://i.imgur.com/X5Z40kT.png</thumbnail>
-	<bannermenu>https://raw.githubusercontent.com/pelisalacarta-ce/media/master/pelisalacarta/bannermenu/playmax.png</bannermenu>
-	<update_url>https://raw.githubusercontent.com/pelisalacarta-ce/pelisalacarta-ce/master/python/main-classic/channels/</update_url>
+	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/playmax.png</bannermenu>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 
 	<categories>
 		<category>movie</category>

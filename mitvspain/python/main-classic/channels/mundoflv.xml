@@ -15,7 +15,7 @@
 	<thumbnail>https://s32.postimg.org/h1ewz9hhx/mundoflv.png</thumbnail>
 	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/mundoflv.png</bannermenu>
 	
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>14</version>
 
 	<changes>

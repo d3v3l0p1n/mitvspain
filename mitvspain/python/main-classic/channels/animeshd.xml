@@ -11,7 +11,7 @@
 	<thumbnail>https://s21.postimg.org/b43i3ljav/animeshd.png</thumbnail>
 	<bannermenu>https://s4.postimg.org/lulxulmql/animeshd-banner.png</bannermenu>
 	
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>3</version>
 	<changes>
 		<change>

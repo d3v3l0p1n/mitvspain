@@ -12,7 +12,7 @@
 	<thumbnail>http://s6.postimg.org/kta7oe8y9/aquitorrentlogo.png</thumbnail>
 	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/aquitorrent.png</bannermenu>
 
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>6</version>
 	<changes>
 		<change>

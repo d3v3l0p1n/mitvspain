@@ -15,7 +15,7 @@
 	<thumbnail>https://s27.postimg.org/atgs5erab/verpeliculasnuevas.png</thumbnail>
 	<bannermenu>https://s23.postimg.org/4uyyz6w4b/verpeliculasnuevas_banner.png</bannermenu>
 
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>6</version>
 	<changes>
 		<change>

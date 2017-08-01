@@ -11,7 +11,7 @@
 	<thumbnail>https://d12.usercdn.com/i/02278/nwm6todp6yyk.png</thumbnail>
 	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/pepecine.png</bannermenu>
 	
-	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels//</update_url>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
 	<version>8</version>
 
 	<changes>
