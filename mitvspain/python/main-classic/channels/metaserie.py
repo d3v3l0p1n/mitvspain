@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-# ------------------------------------------------------------
-# Canal (MetaSerie)
-# ------------------------------------------------------------
 
 import urlparse, urllib2, urllib, re
 import os, sys
@@ -65,12 +62,9 @@ def todas(item):
     logger.info()
     itemlist = []
     data = httptools.downloadpage(item.url).data
-    logger.debug(data)
-
-    patron = '<div class="poster">[^<]'
-    patron += '<a href="([^"]+)" title="([^"]+)en(.*?)">[^<]'
-    patron += '<div class="poster_efecto"><span>([^<]+)<.*?div>[^<]'
-    patron += '<img.*?src="([^"]+)"'
+    data = re.sub(r'"|\n|\r|\t|&nbsp;|<br>|\s{2,}', "", data)
+    patron = '<div class=poster>.*?<a href=(.*?) title=(.*?)en(.*?)>.*?'
+    patron +='<div class=poster_efecto><span>(.*?)<.*?div>.*?<img.*?src=(.*?) class'
     matches = re.compile(patron, re.DOTALL).findall(data)
 
     for scrapedurl, scrapedtitle, lang, scrapedplot, scrapedthumbnail in matches:
