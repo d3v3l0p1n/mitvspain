@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
-# Conector para Google video
+# Conector para allmyvideos
 
 # ------------------------------------------------------------
+
 
 import urllib
 
@@ -42,4 +43,4 @@ def get_video_url(page_url, user="", password="", video_password=""):
             video_urls.append([itags[itag], video_url])
             urls.append(video_url)
     video_urls.sort(key=lambda video_urls: int(video_urls[0].replace("p", "")))
-    return video_urls
+return video_urls
