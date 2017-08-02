@@ -970,9 +970,11 @@ def set_player(item, xlistitem, mediaurl, view, strm):
 def play_torrent(item, xlistitem, mediaurl):
     logger.info()
     logger.debug("Entrando a play_torrent!!")
-    conf_torrent = int(config.get_setting("torrent_action"))
+    conf_torrent = config.get_setting("torrent_action")
     if conf_torrent == None:
         conf_torrent = 0
+    else:
+        conf_torrent = int(conf_torrent)
     seleccion=0
     # Opciones disponibles para Reproducir torrents
     torrent_options = list()
