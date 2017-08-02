@@ -21,6 +21,9 @@
     <string id="30007">Ver en calidad baja</string>
     <string id="30008">Ver en calidad alta</string>
     <string id="30009">Mandar a jdownloader</string>
+    
+    <!-- Reproduccion torrent por defecto -->
+    <string id="30333">Acción al seleccionar torrent:</string>
 
     <!-- Tipos de logos para los canales -->
     <string id="30010">Logos de canales:</string>
