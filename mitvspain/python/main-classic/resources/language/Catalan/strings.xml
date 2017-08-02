@@ -22,6 +22,9 @@
 	<string id="30008">Reprodueix en qualitat alta</string>
     	<string id="30009">Envia al jdownloader</string>
 
+    <!-- Reproduccion torrent por defecto -->
+    	<string id="32010">Acció quan es selecciona un Torrent:</string>
+
     <!-- Tipus de logos para els canals -->
 	<string id="30010">Logos dels canals:</string>
 	<string id="30011">Pòster (vertical)</string>

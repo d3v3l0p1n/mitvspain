@@ -21,7 +21,10 @@
     <string id="30007">Guarda in bassa qualità</string>
     <string id="30008">Guarda in alta qualità</string>
     <string id="30009">Invia a jDownloader</string>
-
+    
+    <!-- Reproduccion torrent por defecto -->
+    <string id="30333">Impostazioni predefinite di riproduzione torrent:</string>
+    
     <!-- Visualizzazione logo dei canali -->
     <string id="30010">Visualizzazione icone dei canali:</string>
     <string id="30011">Poster (verticale)</string>
