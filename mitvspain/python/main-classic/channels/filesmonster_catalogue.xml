@@ -3,7 +3,7 @@
 	<id>filesmonster_catalogue</id>
 	<name>Filesmonster Catalogue</name>
 
-	<active>true</active>
+	<active>false</active>
 	<adult>true</adult>
 	<language>es</language>
 	

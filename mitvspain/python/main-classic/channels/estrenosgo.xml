@@ -3,7 +3,7 @@
 	<id>estrenosgo</id>
 	<name>EstrenosGo</name>
 
-	<active>true</active>
+	<active>false</active>
 	<adult>false</adult>
 	<language>es</language>
 
