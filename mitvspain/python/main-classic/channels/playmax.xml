@@ -6,9 +6,14 @@
 	<active>true</active>
 	<adult>false</adult>
 
-	<version>7</version>
+	<version>8</version>
 
 	<changes>
+	<change>
+			<date>03/08/2017</date>
+			<autor>1k2g962r</autor>
+			<description>Corregido Series</description>
+		</change>
 		<change>
 			<date>27/07/2017</date>
 			<autor>1k2g962r</autor>
