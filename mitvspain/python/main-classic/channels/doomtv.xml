@@ -7,7 +7,7 @@
 		<addon_version>4.3</addon_version>
 	</compatible>
 
-	<active>true</active>
+	<active>false</active>
 	<adult>false</adult>
 	<language>es</language>
 

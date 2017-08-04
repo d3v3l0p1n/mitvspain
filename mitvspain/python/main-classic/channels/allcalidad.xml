@@ -12,8 +12,8 @@
 	<thumbnail>https://s22.postimg.org/irnlwuizh/allcalidad1.png</thumbnail>
 	<bannermenu>https://s22.postimg.org/9y1athlep/allcalidad2.png</bannermenu>
 	
-	<update_url>1</update_url>
-	<version>1</version>
+	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
+	<version>2</version>
 	<changes>
             <change>
                     <date>14/07/2017</date>

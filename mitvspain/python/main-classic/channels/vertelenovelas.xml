@@ -3,7 +3,7 @@
 	<id>vertelenovelas</id>
 	<name>Ver Telenovelas</name>
 
-	<active>true</active>
+	<active>false</active>
 	<adult>false</adult>
 	<language>es</language>
 

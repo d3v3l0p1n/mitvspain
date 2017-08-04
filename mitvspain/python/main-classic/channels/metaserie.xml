@@ -4,7 +4,7 @@
 	<name>MetaSerie (Latino)</name>
 
 	<compatible>
-		<addon_version>4.3</addon_version>
+		<addon_version>1.0.0</addon_version>
 	</compatible>
 
 	<active>true</active>
@@ -16,7 +16,7 @@
 	<bannermenu>https://s31.postimg.org/u6yddil8r/metaserie_banner.png</bannermenu>
 	
 	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
-    <version>7</version>
+    <version>8</version>
 
 	<changes>
 		<change>

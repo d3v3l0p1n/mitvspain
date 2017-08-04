@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
-# Conector para allmyvideos
+# Conector para downace
 
 # ------------------------------------------------------------
-
 
 from core import httptools
 from core import logger
@@ -27,4 +26,4 @@ def get_video_url(page_url, user="", password="", video_password=""):
     videourl = scrapertools.find_single_match(data, 'controls preload.*?src="([^"]+)')
     video_urls.append([".MP4 [downace]", videourl])
 
-return video_urls
+    return video_urls

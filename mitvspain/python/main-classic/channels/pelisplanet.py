@@ -228,8 +228,8 @@ def findvideos(item):
     datas = httptools.downloadpage(item.url).data
     datas = re.sub(r"\n|\r|\t|\(.*?\)|\s{2}|&nbsp;", "", datas)
     # logger.info(data)
-    patron = '<a style="cursor:pointer; cursor: hand;" rel="(?P<scrapedurl>[^"]+)".*?'
-    patron += 'clearfix colores title_calidad">.*?<span>(?P<servidores>[^<]+)</span></a>'
+    patron = '<a style="cursor:pointer; cursor: hand;" rel="([^"]+)".*?'
+    patron += 'clearfix colores title_calidad">.*?<span>([^<]+)</span></a>'
 
     matches = re.compile(patron, re.DOTALL).findall(datas)
 

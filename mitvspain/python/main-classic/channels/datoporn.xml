@@ -3,7 +3,7 @@
 	<id>datoporn</id>
 	<name>DatoPorn</name>
 	<language>es</language>
-	<active>true</active>
+	<active>false</active>
 	<adult>true</adult>
 
 	<changes>
