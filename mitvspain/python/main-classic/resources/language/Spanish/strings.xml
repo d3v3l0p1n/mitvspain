@@ -16,14 +16,22 @@
     <string id="30043">Forzar el modo de vista:</string>
 
     <!-- Acción por defecto cuando eliges un video -->
-    <string id="30005">Accion al seleccionar vídeo:</string>
+    <string id="30005">Acción al seleccionar vídeo:</string>
     <string id="30006">Preguntar</string>
     <string id="30007">Ver en calidad baja</string>
     <string id="30008">Ver en calidad alta</string>
     <string id="30009">Mandar a jdownloader</string>
-    
-    <!-- Reproduccion torrent por defecto -->
+	
+	<!-- Reproduccion torrent por defecto -->
     <string id="30333">Acción al seleccionar torrent:</string>
+    <string id="30334">Interno</string>
+    <string id="30335">InternoMCT</string>
+    <string id="30336">Quasar</string>
+    <string id="30337">Torrenter</string>
+    <string id="30338">Torrentin</string>
+    <string id="30339">XbmcTorrent</string>
+    <string id="30340">Pulsar</string>
+    <string id="30341">Stream</string>
 
     <!-- Tipos de logos para los canales -->
     <string id="30010">Logos de canales:</string>

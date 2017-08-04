@@ -21,10 +21,18 @@
     <string id="30007">Guarda in bassa qualità</string>
     <string id="30008">Guarda in alta qualità</string>
     <string id="30009">Invia a jDownloader</string>
-    
+
     <!-- Reproduccion torrent por defecto -->
-    <string id="30333">Impostazioni predefinite di riproduzione torrent:</string>
-    
+    <string id="30333">Impostazioni predefinite di torrent:</string>
+    <string id="30334">Interno</string>
+    <string id="30335">InternoMCT</string>
+    <string id="30336">Quasar</string>
+    <string id="30337">Torrenter</string>
+    <string id="30338">Torrentin</string>
+    <string id="30339">XbmcTorrent</string>
+    <string id="30340">Pulsar</string>
+    <string id="30341">Stream</string>
+
     <!-- Visualizzazione logo dei canali -->
     <string id="30010">Visualizzazione icone dei canali:</string>
     <string id="30011">Poster (verticale)</string>

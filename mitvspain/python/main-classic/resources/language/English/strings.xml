@@ -21,9 +21,17 @@
     <string id="30007">Watch in low quality</string>
     <string id="30008">Watch in high quality</string>
     <string id="30009">Send to jDownloader</string>
-	
+
     <!-- Reproduccion torrent por defecto -->
-    <string id="30333">Default Torrent setting:</string>
+    <string id="30333">Default torrent play setting:</string>
+    <string id="30334">Internal</string>
+    <string id="30335">InternalMCT</string>
+    <string id="30336">Quasar</string>
+    <string id="30337">Torrenter</string>
+    <string id="30338">Torrentin</string>
+    <string id="30339">XbmcTorrent</string>
+    <string id="30340">Pulsar</string>
+    <string id="30341">Stream</string>
 
     <!-- Logo visualization for channels -->
     <string id="30010">Channel icons view:</string>
