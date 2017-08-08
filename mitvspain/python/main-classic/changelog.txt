@@ -1,9 +1,9 @@
-
+﻿
 MiTvSpain V.1.1.12
 
 08/08/2017
 
-Reparada Libreria y cambio de iconos
+Reparada Libreria y cambio de iconos, Teneis que hacer limpieza de imagenes de kodi/smpc
 
 
 
