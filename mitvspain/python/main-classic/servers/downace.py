@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
-# Conector para allmyvideos
-
+# Conector para downace
 # ------------------------------------------------------------
 
 
