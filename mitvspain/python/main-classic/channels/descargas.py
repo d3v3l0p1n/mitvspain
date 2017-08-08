@@ -86,7 +86,6 @@ def mainlist(item):
                     s.downloadStatus = i.downloadStatus
                       
                 s.title = TITLE_TVSHOW % (STATUS_COLORS[s.downloadStatus], downloadProgress, i.contentSerieName, i.contentChannel)
-
           # Peliculas
           elif i.contentType == "movie" or i.contentType == "video":
               i.title = TITLE_FILE % (STATUS_COLORS[i.downloadStatus], i.downloadProgress, i.contentTitle)
@@ -296,8 +295,7 @@ def move_to_libray(item):
           tvshow = Item(channel= "descargas", contentType="tvshow", infoLabels = {"tmdb_id": item.infoLabels["tmdb_id"]})
           library.save_library_tvshow(tvshow, [library_item])
 
-
-
+		  
 def update_json(path, params):
     item = Item().fromjson(filetools.read(path))
     item.__dict__.update(params)
@@ -455,10 +453,11 @@ def download_from_url(url, item):
 
 
     # Lanzamos la descarga
-    d = Downloader(url, download_path, file_name, max_connections = 1+ int(config.get_setting("max_connections", "descargas")),
-                                                  block_size = 2**(17 + int(config.get_setting("block_size", "descargas"))),
-                                                  part_size = 2**(20 + int(config.get_setting("part_size", "descargas"))),
-                                                  max_buffer = 2 * int(config.get_setting("max_buffer", "descargas")))
+    d = Downloader(url, download_path, file_name, 
+				   max_connections = 1+ int(config.get_setting("max_connections", "descargas")),
+                   block_size = 2**(17 + int(config.get_setting("block_size", "descargas"))),
+                   part_size = 2**(20 + int(config.get_setting("part_size", "descargas"))),
+                   max_buffer = 2 * int(config.get_setting("max_buffer", "descargas")))
     d.start_dialog("Descargas")
 
     # Descarga detenida. Obtenemos el estado:
@@ -712,8 +711,6 @@ def get_episodes(item):
     return itemlist 
     
     
-
-      
 def write_json(item):
     logger.info()
   
@@ -730,7 +727,7 @@ def write_json(item):
       if item.__dict__.has_key(name):
         item.__dict__.pop(name)
 
-    path = os.path.join(config.get_setting("downloadlistpath"), str(time.time()) + ".json")
+		path = os.path.join(config.get_setting("downloadlistpath"), str(time.time()) + ".json")
     filetools.write(path, item.tojson())
     item.path = path
     time.sleep(0.1)

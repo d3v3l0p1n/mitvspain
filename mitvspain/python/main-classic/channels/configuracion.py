@@ -583,7 +583,7 @@ def submenu_tools(item):
         itemlist.append(Item(channel=CHANNELNAME, action="overwrite_tools", folder=False,
                              thumbnail=get_thumbnail_path("thumb_biblioteca.png"),
                              title="   Sobreescribir toda la biblioteca (strm, nfo y json)"))
-        itemlist.append(Item(channel="biblioteca", action="update_biblio", folder=False,
+        itemlist.append(Item(channel="biblioteca", action="update_biblioteca", folder=False,
                              thumbnail=get_thumbnail_path("thumb_biblioteca.png"),
                              title="   Buscar nuevos episodios y actualizar biblioteca"))
 

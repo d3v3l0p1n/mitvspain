@@ -2,7 +2,6 @@
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
 # Canal para ver un vídeo conociendo su URL
-
 # ------------------------------------------------------------
 
 from core import logger
@@ -15,7 +14,8 @@ def mainlist(item):
     logger.info()
 
     itemlist = []
-    itemlist.append( Item(channel=item.channel, action="search", title="Entra aquí y teclea la URL [Enlace a servidor online/descarga]"))
+    itemlist.append( Item(channel=item.channel, action="search", 
+	title="Entra aquí y teclea la URL [Enlace a servidor online/descarga]"))
     itemlist.append( Item(channel=item.channel, action="search", title="Entra aquí y teclea la URL [Enlace directo a un vídeo]"))
     itemlist.append( Item(channel=item.channel, action="search", title="Entra aquí y teclea la URL [Búsqueda de enlaces en una url]"))
 

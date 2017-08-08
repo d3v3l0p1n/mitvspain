@@ -160,7 +160,7 @@ def series(item):
     if itemlist:
         itemlist = sorted(itemlist, key=lambda it: it.title.lower())
 
-        itemlist.append(Item(channel=item.channel, action="update_biblio", thumbnail=item.thumbnail,
+        itemlist.append(Item(channel=item.channel, action="update_biblioteca", thumbnail=item.thumbnail,
                              title="Buscar nuevos episodios y actualizar biblioteca", folder=False))
 
     return itemlist
@@ -454,7 +454,7 @@ def play(item):
     return itemlist
 
 
-def update_biblio(item):
+def update_biblioteca(item):
     logger.info()
 
     # Actualizar las series activas sobreescribiendo

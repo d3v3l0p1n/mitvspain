@@ -12,7 +12,7 @@
 		<ignore_urls>
 		</ignore_urls>
 		<patterns>
-			<pattern>(http:\/\/(?:.*?)\.torrent)</pattern>
+			<pattern>(http:\\/\\/(?:[a-zA-Z0-9]+)\\.torrent)</pattern>
 			<url>\1</url>
 		</patterns>
 		<patterns>
@@ -49,5 +49,5 @@
 	</settings>
 	<thumbnail>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/servers/server_torrent.png</thumbnail>
 	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/servers/</update_url>
-	<version>2</version>
+	<version>3</version>
 </server>

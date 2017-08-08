@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
-
 # ------------------------------------------------------------
 
 import glob
@@ -436,7 +435,7 @@ def do_search(item, categories=[]):
                                      from_channel=search["item"].channel, tecleado=tecleado))
             else:
                 title = ">> Resultados del canal %s:" % title
-                itemlist.append(Item(title=title, channel="buscador", action="",
+                itemlist.append(Item(title=title, channel="title", action="",
                                      folder=False, text_color="yellow"))
                 #itemlist.extend(search["itemlist"])
                 for i in search["itemlist"]:
