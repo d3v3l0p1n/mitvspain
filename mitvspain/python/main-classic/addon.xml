@@ -13,7 +13,7 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="es">Películas y series a la carta</summary>
     <description lang="es">Películas, series, documentales, anime, ... Todo está en Internet, y ahora en tu media center.</description>
-    <news>Reparada Libreria y cambio de iconos, Teneis que hacer limpieza de imagenes de kodi/smpc</news>
+    <news>Reparada Biblioteca ,librerias y cambio de iconos, Teneis que hacer limpieza de imagenes de kodi/smpc</news>
    
     <platform>all</platform>
     <license>GNU GPL v3</license>
