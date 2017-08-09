@@ -20,7 +20,7 @@ if not config.is_xbmc():
 	platformtools.dialog_notification("¡ALERTA!",
                                                 "El renumerado no funciona "
                                                 "en la version Plex o Mediaserver")
-HOST = "http://animeflv.net/"
+HOST = "https://animeflv.net/"
 
 def mainlist(item):
     logger.info()

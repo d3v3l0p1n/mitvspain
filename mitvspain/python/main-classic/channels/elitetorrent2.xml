@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<channel>
+	<id>elitetorrent2</id>
+	<name>EliteTorrent2</name>
+
+	<active>true</active>
+	<adult>false</adult>
+	<language>es</language>
+
+	<fanart></fanart>
+	<thumbnail>http://www.elitetorrent2.net/wp-content/uploads/2017/07/logo-1-2.png</thumbnail>
+	<bannermenu>http://www.elitetorrent2.net/wp-content/uploads/2017/07/logo-1-2.png</bannermenu>
+
+	<update_url>https://raw.githubusercontent.com/tvalacarta/pelisalacarta/master/python/main-classic/channels/</update_url>
+	<version>1</version>
+
+	<changes>
+		<change>
+			<date>13/07/2017</date>
+			<autor>M</autor>
+			<description>Creacion addon</description>
+		</change>
+	</changes>
+
+	<categories>
+		<category>novedades</category>
+		<category>year</category>
+		<category>buscar</category>
+	</categories>
+</channel>

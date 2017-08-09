@@ -2,11 +2,9 @@
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
 # Conector para Vimeo
-
 # ------------------------------------------------------------
 
 import re
-
 from core import jsontools
 from core import logger
 from core import scrapertools

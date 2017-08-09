@@ -36,155 +36,11 @@ from core import filetools
 from core import jsontools
 from core import library
 from core import logger
+from core import channeltools
 from core.item import Item
 from platformcode import platformtools
 
 
-def convert_old_to_v4():
-    logger.info()
-    path_series_xml = filetools.join(config.get_data_path(), "series.xml")
-    path_series_json = filetools.join(config.get_data_path(), "series.json")
-    series_insertadas = 0
-    series_fallidas = 0
-    version = 'v?'
-
-    # Renombrar carpeta Series y crear una vacia
-    import time
-    new_name = str(time.time())
-    path_series_old = filetools.join(library.LIBRARY_PATH, "SERIES_OLD_" + new_name)
-    if filetools.rename(library.TVSHOWS_PATH, "SERIES_OLD_" + new_name):
-        if not filetools.mkdir(library.TVSHOWS_PATH):
-            logger.error("ERROR, no se ha podido crear la nueva carpeta de SERIES")
-            return False
-    else:
-        logger.error("ERROR, no se ha podido renombrar la antigua carpeta de SERIES")
-        return False
-
-    path_cine_old = filetools.join(library.LIBRARY_PATH, "CINE_OLD_" + new_name)
-    if filetools.rename(library.MOVIES_PATH,  "CINE_OLD_" + new_name):
-        if not filetools.mkdir(library.MOVIES_PATH):
-            logger.error("ERROR, no se ha podido crear la nueva carpeta de CINE")
-            return False
-    else:
-        logger.error("ERROR, no se ha podido renombrar la antigua carpeta de CINE")
-        return False
-
-    # Convertir libreria de v1(xml) a v4
-    if filetools.exists(path_series_xml):
-        try:
-            data = filetools.read(path_series_xml)
-            for line in data.splitlines():
-                try:
-                    aux = line.rstrip('\n').split(",")
-                    tvshow = aux[0].strip()
-                    url = aux[1].strip()
-                    channel = aux[2].strip()
-
-                    serie = Item(contentSerieName=tvshow, url=url, channel=channel, action="episodios",
-                                 title=tvshow, active=True)
-
-                    patron = "^(.+)[\s]\((\d{4})\)$"
-                    matches = re.compile(patron, re.DOTALL).findall(serie.contentSerieName)
-
-                    if matches:
-                        serie.infoLabels['title'] = matches[0][0]
-                        serie.infoLabels['year'] = matches[0][1]
-                    else:
-                        serie.infoLabels['title'] = tvshow
-
-                    insertados, sobreescritos, fallidos = library.save_library_tvshow(serie, list())
-                    if fallidos == 0:
-                        series_insertadas += 1
-                        platformtools.dialog_notification("Serie actualizada", serie.infoLabels['title'])
-                    else:
-                        series_fallidas += 1
-                except:
-                    series_fallidas += 1
-
-            filetools.rename(path_series_xml, "series.xml.old")
-            version = 'v4'
-
-        except EnvironmentError:
-            logger.error("ERROR al leer el archivo: %s" % path_series_xml)
-            return False
-
-    # Convertir libreria de v2(json) a v4
-    if filetools.exists(path_series_json):
-        try:
-            data = jsontools.load_json(filetools.read(path_series_json))
-            for tvshow in data:
-                for channel in data[tvshow]["channels"]:
-                    try:
-                        serie = Item(contentSerieName=data[tvshow]["channels"][channel]["tvshow"],
-                                     url=data[tvshow]["channels"][channel]["url"], channel=channel, action="episodios",
-                                     title=data[tvshow]["name"], active=True)
-                        if not tvshow.startswith("t_"):
-                            serie.infoLabels["tmdb_id"] = tvshow
-
-                        insertados, sobreescritos, fallidos = library.save_library_tvshow(serie, list())
-                        if fallidos == 0:
-                            series_insertadas += 1
-                            platformtools.dialog_notification("Serie actualizada", serie.infoLabels['title'])
-                        else:
-                            series_fallidas += 1
-                    except:
-                        series_fallidas += 1
-
-            filetools.rename(path_series_json, "series.json.old")
-            version = 'v4'
-
-        except EnvironmentError:
-            logger.error("ERROR al leer el archivo: %s" % path_series_json)
-            return False
-
-    # Convertir libreria de v3 a v4
-    if version != 'v4':
-        # Obtenemos todos los tvshow.json de la biblioteca de SERIES_OLD recursivamente
-        for raiz, subcarpetas, ficheros in filetools.walk(path_series_old):
-            for f in ficheros:
-                if f == "tvshow.json":
-                    try:
-                        serie = Item().fromjson(filetools.read(filetools.join(raiz, f)))
-                        insertados, sobreescritos, fallidos = library.save_library_tvshow(serie, list())
-                        if fallidos == 0:
-                            series_insertadas += 1
-                            platformtools.dialog_notification("Serie actualizada", serie.infoLabels['title'])
-                        else:
-                            series_fallidas += 1
-                    except:
-                        series_fallidas += 1
-
-        movies_insertadas = 0
-        movies_fallidas = 0
-        for raiz, subcarpetas, ficheros in filetools.walk(path_cine_old):
-            for f in ficheros:
-                if f.endswith(".strm.json"):
-                    try:
-                        movie = Item().fromjson(filetools.read(filetools.join(raiz, f)))
-                        insertados, sobreescritos, fallidos = library.save_library_movie(movie)
-                        if fallidos == 0:
-                            movies_insertadas += 1
-                            platformtools.dialog_notification("Película actualizada", movie.infoLabels['title'])
-                        else:
-                            movies_fallidas += 1
-                    except:
-                        movies_fallidas += 1
-
-    config.set_setting("library_version", 'v4')
-
-    platformtools.dialog_notification("Biblioteca actualizada al nuevo formato",
-                                      "%s series convertidas y %s series descartadas.\n"
-                                      "%s peliculas convertidas y %s peliculas descartadas."
-                                      "A continuación se va a obtener la información de todos los episodios" %
-                                      (series_insertadas, series_fallidas, movies_insertadas, movies_fallidas),
-                                      time=12000)
-
-    # Por ultimo limpia la libreria, por que las rutas anteriores ya no existen
-    if config.is_xbmc():
-        from platformcode import xbmc_library
-        xbmc_library.clean()
-
-    return True
 
 
 def update(path, p_dialog, i, t, serie, overwrite):
@@ -196,6 +52,10 @@ def update(path, p_dialog, i, t, serie, overwrite):
         serie.channel = channel
         serie.url = url
 
+		#channel_active = channeltools.is_active(channel)
+		
+		#if channel_active:
+		
         heading = 'Actualizando biblioteca....'
         p_dialog.update(int(math.ceil((i + 1) * t)), heading, "%s: %s" % (serie.contentSerieName,
                                                                           serie.channel.capitalize()))

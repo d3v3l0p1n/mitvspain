@@ -2,7 +2,6 @@
 # ------------------------------------------------------------
 # MiTvSpain
 # modulo para AutoPlay de MiTvSpain por Hernan_ar_c
-
 # ------------------------------------------------------------
 
 from core import channeltools
@@ -18,7 +17,7 @@ __channel__ = "autoplay"
 autoplay_node = {}
 
 
-def context ():
+def context():
     '''
     Agrega la opcion Configurar AutoPlay al menu contextual
 
@@ -37,7 +36,7 @@ def context ():
 context = context()
 
 
-def show_option (channel, itemlist, text_color='yellow', thumbnail=None, fanart=None):
+def show_option(channel, itemlist, text_color='yellow', thumbnail=None, fanart=None):
     '''
     Agrega la opcion Configurar AutoPlay en la lista recibida
 
@@ -68,7 +67,7 @@ def show_option (channel, itemlist, text_color='yellow', thumbnail=None, fanart=
     return itemlist
 
 
-def start (itemlist, item):
+def start(itemlist, item):
     '''
     Metodo principal desde donde se reproduce automaticamente los enlaces
     - En caso la opcion de personalizar activa utilizara las opciones definidas por el usuario.

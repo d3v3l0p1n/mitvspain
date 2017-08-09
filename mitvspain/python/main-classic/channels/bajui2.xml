@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <channel>
-	<id>pelisadicto</id>
-	<name>Pelisadicto</name>
+	<id>bajui2</id>
+	<name>Bajui2</name>
 
 	<active>true</active>
 	<adult>false</adult>
 	<language>es</language>
 
 	<fanart></fanart>
-	<thumbnail>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/squares/pelisadicto.png</thumbnail>
-	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/pelisadicto.png</bannermenu>
-
+	<thumbnail>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/squares/bajui2.png</thumbnail>
+	<bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/bajui.png</bannermenu>
+	
 	<update_url>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/mitvspain/python/main-classic/channels/</update_url>
-	<version>6</version>
+	<version>1</version>
 	<changes>
 		<change>
-			<date>15/03/2017</date>
-			<autor></autor>
-			<description>limpieza código</description>
+			<date>04/08/2017</date>
+			<autor>MitvSpain</autor>
+			<description>Nuevo canal</description>
 		</change>
-		<change>
-			<date>01/07/2016</date>
-			<autor></autor>
-			<description>Eliminado código innecesario.</description>
-		</change>
+	
 	</changes>
 
 	<categories>
 		<category>movie</category>
-		<category>latino</category>
+		<category>serie</category>
+		<category>documentary</category>
+		<category>vos</category>
 	</categories>
 
 	<settings>

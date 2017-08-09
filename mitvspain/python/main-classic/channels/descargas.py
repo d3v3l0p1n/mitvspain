@@ -2,7 +2,6 @@
 # ------------------------------------------------------------
 # MiTvSpain 4
 # Copyright 2017
-
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
@@ -132,7 +131,7 @@ def mainlist(item):
     return itemlist
 
 def settings(item):
-    ret = platformtools.show_channel_settings()
+    ret = platformtools.show_channel_settings(caption="configuración -- Descargas")
     platformtools.itemlist_refresh()
     return ret
 
@@ -455,10 +454,11 @@ def download_from_url(url, item):
 
 
     # Lanzamos la descarga
-    d = Downloader(url, download_path, file_name, max_connections = 1+ int(config.get_setting("max_connections", "descargas")),
-                                                  block_size = 2**(17 + int(config.get_setting("block_size", "descargas"))),
-                                                  part_size = 2**(20 + int(config.get_setting("part_size", "descargas"))),
-                                                  max_buffer = 2 * int(config.get_setting("max_buffer", "descargas")))
+    d = Downloader(url, download_path, file_name, 
+				   max_connections = 1+ int(config.get_setting("max_connections", "descargas")),
+                   block_size = 2**(17 + int(config.get_setting("block_size", "descargas"))),
+                   part_size = 2**(20 + int(config.get_setting("part_size", "descargas"))),
+                   max_buffer = 2 * int(config.get_setting("max_buffer", "descargas")))
     d.start_dialog("Descargas")
 
     # Descarga detenida. Obtenemos el estado:

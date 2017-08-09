@@ -49,7 +49,7 @@
 		<id>include_in_global_search</id>
 		<type>bool</type>
 		<label>Incluir en busqueda global</label>
-		<default>false</default>
+		<default>true</default>
 		<enabled>true</enabled>
 		<visible>true</visible>
 	</settings>

@@ -1,4 +1,4 @@
-﻿<?xml reprodueixsion="1.0" encoding="UTF-8" standalone="yes"?>
+﻿?xml reprodueixsion="1.0" encoding="UTF-8" standalone="yes"?>
 <strings>
     <!-- Los id disponibles son de 30000 a 30999 -->
 
@@ -20,10 +20,15 @@
 	<string id="30006">Demana què fer</string>
 	<string id="30007">Reprodueix</string>
 	<string id="30008">Reprodueix en qualitat alta</string>
-    	<string id="30009">Envia al jdownloader</string>
-
-    <!-- Reproduccion torrent por defecto -->
-    	<string id="32010">Acció quan es selecciona un Torrent:</string>
+    <string id="30009">Envia al jdownloader</string>
+    <string id="30334">Intern</string>
+    <string id="30335">InternMCT</string>
+    <string id="30336">Quasar</string>
+    <string id="30337">Torrenter</string>
+    <string id="30338">Torrentin</string>
+    <string id="30339">XbmcTorrent</string>
+    <string id="30340">Pulsar</string>
+    <string id="30341">Stream</string>
 
     <!-- Tipus de logos para els canals -->
 	<string id="30010">Logos dels canals:</string>

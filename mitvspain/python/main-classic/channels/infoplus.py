@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
-
 # ------------------------------------------------------------
 # infoplus ventana con información del Item
 # ------------------------------------------------------------
@@ -270,7 +269,6 @@ class main(xbmcgui.WindowDialog):
 
         self.addControl(self.fanart)
         self.fanart.setAnimations([('conditional', 'effect=rotatey start=100% end=0% time=1500 condition=true',),('unfocus', 'effect=zoom start=110% end=100% time=1000 tween=elastic easing=out',),('WindowClose','effect=rotatey delay= 1000 start=0% end=-300% time=800 condition=true',)])
-
         self.addControl(self.background)
         self.addControl(self.critica_image)
         self.critica_image.setAnimations([('conditional', 'effect=rotatey center=500 start=300% end=0% time=3000 condition=true ',),('unfocus', 'effect=zoom start=110% end=100% time=1000 tween=elastic easing=out',), ('focus', 'effect=zoom start=80% end=110% time=700',),('WindowClose','effect=rotatey center=500 start=0% end=-300% time=800 condition=true',)])
@@ -280,7 +278,6 @@ class main(xbmcgui.WindowDialog):
         self.addControl(self.actorButton)
         self.botones.append(self.actorButton)
         self.actorButton.setAnimations([('conditional', 'effect=slide start=1500% end=0% delay=1200 time=4000 condition=true tween=elastic',),('unfocus', 'effect=zoom start=110% end=100% time=1000 tween=elastic easing=out',), ('focus', 'effect=zoom start=80% end=110% time=700' ,),('WindowClose','effect=slide start=0% end=1500% time=800 condition=true',)])
-
         self.setFocus(self.trailerButton)
         self.addControl(self.title)
         self.title.setAnimations([('conditional', 'effect=fade start=0% end=100% delay=1500 time=1500 condition=true',),('WindowClose','effect=fade start=100% end=0% time=800 condition=true',)])
@@ -299,7 +296,6 @@ class main(xbmcgui.WindowDialog):
         self.plot.setAnimations([('conditional', 'effect=slide delay=2000 start=1500 time=3600 tween=elastic easing=inout condition=true',),('WindowClose','effect=zoom center=auto start=100% end=0% time=800 condition=true',)])
         self.addControl(self.critica)
         self.critica.setAnimations([('conditional', 'effect=slide delay=1800 start=-1500% end=100% time=3600 tween=elastic easing=inout condition=true',),('WindowClose','effect=slide start=100% end=-1500% time=800 condition=true',)])
-
         if not self.infoLabels.get("images") and not self.images:
             self.thumbnail = xbmcgui.ControlImage(813, 0, 390, 150, 'http://i.imgur.com/oMjtYni.png')
             self.addControl(self.thumbnail)
@@ -371,7 +367,6 @@ class main(xbmcgui.WindowDialog):
                 self.addControl(self.neon)
                 self.neon.setVisibleCondition('[Control.HasFocus('+str(self.image.getId())+')]')
                 self.neon.setAnimations([('conditional', 'effect=rotate center=auto start=0% end=360% time=650 tween=bounce condition=Control.HasFocus('+str(self.image.getId())+')',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
-
             self.idps.append([self.image, peli, idp, thumb])
             self.botones_maspelis.append([self.image, self.neon, fadelabel, peli])
 
@@ -532,11 +527,9 @@ class main(xbmcgui.WindowDialog):
                         self.addControl(fadelabel)
                         fadelabel.addLabel(peli)
                         fadelabel.setAnimations([('conditional', 'effect=rotatey start=200 end=0 time=900 tween=elastic condition=true',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
-
                         self.addControl(neon)
                         neon.setVisibleCondition('[Control.HasFocus('+str(afoto.getId())+')]')
                         neon.setAnimations([('conditional', 'effect=rotate center=auto start=0% end=360% time=650 tween=bounce condition=Control.HasFocus('+str(afoto.getId())+')',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
-
                         count += 1
                         self.mas_pelis += 1
                         xbmc.sleep(120)
@@ -576,7 +569,6 @@ class main(xbmcgui.WindowDialog):
                         self.addControl(fadelabel)
                         fadelabel.addLabel(peli)
                         fadelabel.setAnimations([('conditional', 'effect=rotatey start=200 end=0 time=900 tween=elastic condition=true',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
-
                         self.addControl(neon)
                         neon.setVisibleCondition('[Control.HasFocus('+str(afoto.getId())+')]')
                         neon.setAnimations([('conditional', 'effect=rotate center=auto start=0% end=360% time=650 tween=bounce condition=Control.HasFocus('+str(afoto.getId())+')',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
@@ -703,7 +695,6 @@ class related(xbmcgui.WindowDialog):
             self.addControl(self.tagline_peli)
             self.tagline_peli.addLabel(self.infoLabels["tagline"])
             self.tagline_peli.setAnimations([('conditional', 'effect=fade center=auto start=0% end=100%  delay=3800 time=2000  condition=true',),('WindowClose','effect=fade end=0% time=500 condition=true',)])
-
         if self.infoLabels.get("title", self.infoLabels.get("originaltitle")):
             self.title_peli = xbmcgui.ControlFadeLabel(455, 85, 320, 430)
             self.addControl(self.title_peli)
@@ -750,7 +741,6 @@ class related(xbmcgui.WindowDialog):
         release_date = "  [COLOR yellowgreen][B]%s[/B][/COLOR]" % self.infoLabels.get("release_date", self.infoLabels.get("premiered", "---"))
         self.fecha_peli.addLabel(release_date)
         self.fecha_peli.setAnimations([('conditional','effect=slide start=0,-700 delay=5600 time=700 condition=true tween=circle easing=in',),('WindowClose','effect=slide end=0,-7000% delay=300 time=700 condition=true',)])
-
         if self.infoLabels.get("number_of_seasons"):
             self.seasons_txt = xbmcgui.ControlTextBox(210, 485, 200, 60, self.fonts["12"])
             self.addControl(self.seasons_txt)
@@ -857,7 +847,6 @@ class related(xbmcgui.WindowDialog):
         self.addControl(self.global_search)
         self.botones.append(self.global_search)
         self.global_search.setAnimations([('conditional', 'effect=slide start=0,700 delay=6090 time=200 condition=true',),('unfocus', 'effect=zoom center=auto start=70% end=100% time=700 reversible=false',),('conditional','effect=zoom center=auto start=120% end=100% reversible=false tween=bounce time=1000 loop=true condition=Control.HasFocus('+str(self.global_search.getId())+')'),('WindowClose','effect=rotatey end=300 time=1500 condition=true',)])
-
         self.dialog.close()
         xbmc.sleep(200)
 
@@ -1352,7 +1341,6 @@ class ActorInfo(xbmcgui.WindowDialog):
                 self.addControl(self.neon)
                 self.neon.setVisibleCondition('[Control.HasFocus('+str(self.image.getId())+')]')
                 self.neon.setAnimations([('conditional', 'effect=rotate center=auto start=0% end=360% time=650 tween=bounce condition=Control.HasFocus('+str(self.image.getId())+')',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',),])
-
                 self.addControl(fadelabel)
                 fadelabel.addLabel(peli)
                 fadelabel.setAnimations([('conditional', 'effect=rotatey start=200 end=0 delay=6200 time=900 tween=elastic condition=true',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
@@ -1748,7 +1736,7 @@ class images(xbmcgui.WindowDialog):
                         resta2 = 8
                     if i > len_images - resta and count < 8:
                         self.addControl(image)
-                        image.setAnimations([('conditional', 'effect=rotatey start=200 end=0  delay=600 time=900 tween=elastic condition=true',),('unfocus', 'effect=zoom center=auto start=70% end=100% time=700 reversible=false',),('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
+                        image.setAnimations([('conditional', 'effect=rotatey start=200 end=0  delay=600 time=900 tween=elastic condition=true',),('unfocus', 'effect=zoom center=auto start=70% end=100% time=700 reversible=false',), ('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])
                         self.addControl(neon)
                         neon.setVisibleCondition('[Control.HasFocus('+str(image.getId())+')]')
                         neon.setAnimations([('WindowClose','effect=slide end=0,700% time=1000 condition=true',)])

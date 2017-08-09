@@ -1,27 +1,5 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# MiTvSpain
-# Copyright 2017
-
-#
-# Distributed under the terms of GNU General Public License v3 (GPLv3)
-# http://www.gnu.org/licenses/gpl-3.0.html
-# ------------------------------------------------------------
-# This file is part of MiTvSpain.
-#
-# MiTvSpain is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# MiTvSpain is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with MiTvSpain.  If not, see <http://www.gnu.org/licenses/>.
-# ------------------------------------------------------------
 # Common Library Tools
 # ------------------------------------------------------------
 
@@ -39,11 +17,11 @@ from platformcode import platformtools
 
 FOLDER_MOVIES = config.get_setting("folder_movies")
 FOLDER_TVSHOWS = config.get_setting("folder_tvshows")
-LIBRARY_PATH = config.get_library_path()
-MOVIES_PATH = filetools.join(LIBRARY_PATH, FOLDER_MOVIES)
-TVSHOWS_PATH = filetools.join(LIBRARY_PATH, FOLDER_TVSHOWS)
+VIDEOLIBRARY_PATH = config.get_videolibrary_path()
+MOVIES_PATH = filetools.join(VIDEOLIBRARY_PATH, FOLDER_MOVIES)
+TVSHOWS_PATH = filetools.join(VIDEOLIBRARY_PATH, FOLDER_TVSHOWS)
 
-if not FOLDER_MOVIES or not FOLDER_TVSHOWS or not LIBRARY_PATH \
+if not FOLDER_MOVIES or not FOLDER_TVSHOWS or not VIDEOLIBRARY_PATH \
         or not filetools.exists(MOVIES_PATH) or not filetools.exists(TVSHOWS_PATH):
     config.verify_directories_created()
 
@@ -90,7 +68,7 @@ def read_nfo(path_nfo, item=None):
     return head_nfo, it
 
 
-def save_library_movie(item):
+def save_movie(item):
     """
     guarda en la libreria de peliculas el elemento item, con los valores que contiene.
     @type item: item
@@ -110,7 +88,7 @@ def save_library_movie(item):
     path = ""
 
     # Itentamos obtener el titulo correcto:
-    # 1. contentTitle: Este deberia ser el sitio correcto, ya que title suele contener "Añadir a la biblioteca..."
+    # 1. contentTitle: Este deberia ser el sitio correcto, ya que title suele contener "Añadir a la videoteca..."
     # 2. fulltitle
     # 3. title
     if not item.contentTitle:
@@ -140,9 +118,9 @@ def save_library_movie(item):
     _id = item.infoLabels['code'][0]
 
     # progress dialog
-    p_dialog = platformtools.dialog_progress('mitvspain', 'Añadiendo película...')
+    p_dialog = platformtools.dialog_progress('alfa', 'Añadiendo película...')
 
-    if config.get_setting("original_title_folder", "biblioteca") == 1 and item.infoLabels['originaltitle']:
+    if config.get_setting("original_title_folder", "videolibrary") == 1 and item.infoLabels['originaltitle']:
         base_name = item.infoLabels['originaltitle']
     else:
         base_name = item.contentTitle
@@ -179,7 +157,7 @@ def save_library_movie(item):
         logger.info("Creando .nfo: " + nfo_path)
         head_nfo = scraper.get_nfo(item)
 
-        item_nfo = Item(title=item.contentTitle, channel="biblioteca", action='findvideos',
+        item_nfo = Item(title=item.contentTitle, channel="videolibrary", action='findvideos',
                         library_playcounts={"%s [%s]" % (base_name, _id): 0}, infoLabels=item.infoLabels,
                         library_urls={})
 
@@ -189,9 +167,9 @@ def save_library_movie(item):
 
     if not strm_exists:
         # Crear base_name.strm si no existe
-        item_strm = Item(channel='biblioteca', action='play_from_library',
-                               strm_path=strm_path.replace(MOVIES_PATH, ""), contentType='movie',
-                               contentTitle=item.contentTitle)
+        item_strm = Item(channel='videolibrary', action='play_from_library',
+                         strm_path=strm_path.replace(MOVIES_PATH, ""), contentType='movie',
+                         contentTitle=item.contentTitle)
         strm_exists = filetools.write(strm_path, '%s?%s' % (addon_name, item_strm.tourl()))
         item_nfo.strm_path = strm_path.replace(MOVIES_PATH, "")
 
@@ -209,22 +187,22 @@ def save_library_movie(item):
             item_nfo.library_urls[item.channel] = item.url
 
             if filetools.write(nfo_path, head_nfo + item_nfo.tojson()):
-                # actualizamos la biblioteca de Kodi con la pelicula
+                # actualizamos la videoteca de Kodi con la pelicula
                 if config.is_xbmc():
-                    from platformcode import xbmc_library
-                    xbmc_library.update(FOLDER_MOVIES, filetools.basename(path) + "/")
+                    from platformcode import xbmc_videolibrary
+                    xbmc_videolibrary.update(FOLDER_MOVIES, filetools.basename(path) + "/")
 
                 p_dialog.close()
                 return insertados, sobreescritos, fallidos
 
     # Si llegamos a este punto es por q algo ha fallado
-    logger.error("No se ha podido guardar %s en la biblioteca" % item.contentTitle)
+    logger.error("No se ha podido guardar %s en la videoteca" % item.contentTitle)
     p_dialog.update(100, 'Fallo al añadir...', item.contentTitle)
     p_dialog.close()
     return 0, 0, -1
 
 
-def save_library_tvshow(item, episodelist):
+def save_tvshow(item, episodelist):
     """
     guarda en la libreria de series la serie con todos los capitulos incluidos en la lista episodelist
     @type item: item
@@ -261,7 +239,7 @@ def save_library_tvshow(item, episodelist):
 
     _id = item.infoLabels['code'][0]
 
-    if config.get_setting("original_title_folder", "biblioteca") == 1 and item.infoLabels['originaltitle']:
+    if config.get_setting("original_title_folder", "videolibrary") == 1 and item.infoLabels['originaltitle']:
         base_name = item.infoLabels['originaltitle']
     elif item.infoLabels['title']:
         base_name = item.infoLabels['title']
@@ -294,7 +272,7 @@ def save_library_tvshow(item, episodelist):
         logger.info("Creando tvshow.nfo: " + tvshow_path)
         head_nfo = scraper.get_nfo(item)
 
-        item_tvshow = Item(title=item.contentTitle, channel="biblioteca", action="get_temporadas",
+        item_tvshow = Item(title=item.contentTitle, channel="videolibrary", action="get_seasons",
                            fanart=item.infoLabels['fanart'], thumbnail=item.infoLabels['thumbnail'],
                            infoLabels=item.infoLabels, path=path.replace(TVSHOWS_PATH, ""))
         item_tvshow.library_playcounts = {}
@@ -303,8 +281,8 @@ def save_library_tvshow(item, episodelist):
     else:
         # Si existe tvshow.nfo, pero estamos añadiendo un nuevo canal actualizamos el listado de urls
         head_nfo, item_tvshow = read_nfo(tvshow_path)
-        item_tvshow.channel = "biblioteca"
-        item_tvshow.action = "get_temporadas"
+        item_tvshow.channel = "videolibrary"
+        item_tvshow.action = "get_seasons"
         item_tvshow.library_urls[item.channel] = item.url
 
     # FILTERTOOLS
@@ -317,8 +295,8 @@ def save_library_tvshow(item, episodelist):
         else:
             item_tvshow.library_filter_show = {item.channel: item.show}
 
-    if item.channel != "descargas":
-        item_tvshow.active = 1  # para que se actualice a diario cuando se llame a library_service
+    if item.channel != "downloads":
+        item_tvshow.active = 1  # para que se actualice a diario cuando se llame a videolibrary_service
 
     filetools.write(tvshow_path, head_nfo + item_tvshow.tojson())
 
@@ -326,11 +304,10 @@ def save_library_tvshow(item, episodelist):
         # La lista de episodios esta vacia
         return 0, 0, 0
 
-
     # Guardar los episodios
     '''import time
     start_time = time.time()'''
-    insertados, sobreescritos, fallidos = save_library_episodes(path, episodelist, item)
+    insertados, sobreescritos, fallidos = save_episodes(path, episodelist, item)
     '''msg = "Insertados: %d | Sobreescritos: %d | Fallidos: %d | Tiempo: %2.2f segundos" % \
           (insertados, sobreescritos, fallidos, time.time() - start_time)
     logger.debug(msg)'''
@@ -338,7 +315,7 @@ def save_library_tvshow(item, episodelist):
     return insertados, sobreescritos, fallidos, path
 
 
-def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True):
+def save_episodes(path, episodelist, serie, silent=False, overwrite=True):
     """
     guarda en la ruta indicada todos los capitulos incluidos en la lista episodelist
     @type path: str
@@ -374,10 +351,10 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
     ficheros = os.listdir(path)
     ficheros = [filetools.join(path, f) for f in ficheros]
 
-    # Silent es para no mostrar progreso (para library_service)
+    # Silent es para no mostrar progreso (para videolibrary_service)
     if not silent:
         # progress dialog
-        p_dialog = platformtools.dialog_progress('mitvspain', 'Añadiendo episodios...')
+        p_dialog = platformtools.dialog_progress('alfa', 'Añadiendo episodios...')
         p_dialog.update(0, 'Añadiendo episodio...')
 
     new_episodelist = []
@@ -415,7 +392,7 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
 
         if not strm_exists:
             # Si no existe season_episode.strm añadirlo
-            item_strm = Item(action='play_from_library', channel='biblioteca',
+            item_strm = Item(action='play_from_library', channel='videolibrary',
                              strm_path=strm_path.replace(TVSHOWS_PATH, ""), infoLabels={})
             item_strm.contentSeason = e.contentSeason
             item_strm.contentEpisodeNumber = e.contentEpisodeNumber
@@ -441,11 +418,10 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
             scraper.find_and_set_infoLabels(e)
             head_nfo = scraper.get_nfo(e)
 
-            item_nfo = e.clone(channel="biblioteca", url="", action='findvideos',
+            item_nfo = e.clone(channel="videolibrary", url="", action='findvideos',
                                strm_path=strm_path.replace(TVSHOWS_PATH, ""))
 
             nfo_exists = filetools.write(nfo_path, head_nfo + item_nfo.tojson())
-
 
         # Solo si existen season_episode.nfo y season_episode.strm continuamos
         if nfo_exists and strm_exists:
@@ -479,7 +455,6 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
             logger.info("Fallido: %s" % json_path)
             fallidos += 1
 
-
         if not silent and p_dialog.iscanceled():
             break
 
@@ -506,10 +481,10 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
             logger.error("Error al actualizar tvshow.nfo")
             fallidos = -1
         else:
-            # ... si ha sido correcto actualizamos la biblioteca de Kodi
+            # ... si ha sido correcto actualizamos la videoteca de Kodi
             if config.is_xbmc() and not silent:
-                from platformcode import xbmc_library
-                xbmc_library.update(FOLDER_TVSHOWS, filetools.basename(path))
+                from platformcode import xbmc_videolibrary
+                xbmc_videolibrary.update(FOLDER_TVSHOWS, filetools.basename(path))
 
     if fallidos == len(episodelist):
         fallidos = -1
@@ -519,63 +494,55 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
     return insertados, sobreescritos, fallidos
 
 
-def add_pelicula_to_library(item):
+def add_movie(item):
     """
         guarda una pelicula en la libreria de cine. La pelicula puede ser un enlace dentro de un canal o un video
         descargado previamente.
-
         Para añadir episodios descargados en local, el item debe tener exclusivamente:
             - contentTitle: titulo de la pelicula
             - title: titulo a mostrar junto al listado de enlaces -findvideos- ("Reproducir video local HD")
             - infoLabels["tmdb_id"] o infoLabels["imdb_id"]
             - contentType == "movie"
-            - channel = "descargas"
+            - channel = "downloads"
             - url : ruta local al video
-
         @type item: item
         @param item: elemento que se va a guardar.
     """
     logger.info()
- 
 
     new_item = item.clone(action="findvideos")
-    insertados, sobreescritos, fallidos = save_library_movie(new_item)
+    insertados, sobreescritos, fallidos = save_movie(new_item)
 
     if fallidos == 0:
         platformtools.dialog_ok(config.get_localized_string(30131), new_item.contentTitle,
-                                config.get_localized_string(30135))  # 'se ha añadido a la biblioteca'
+                                config.get_localized_string(30135))  # 'se ha añadido a la videoteca'
     else:
         platformtools.dialog_ok(config.get_localized_string(30131),
-                                "ERROR, la pelicula NO se ha añadido a la biblioteca")
+                                "ERROR, la pelicula NO se ha añadido a la videoteca")
 
 
-def add_serie_to_library(item, channel=None):
+def add_tvshow(item, channel=None):
     """
         Guarda contenido en la libreria de series. Este contenido puede ser uno de estos dos:
             - La serie con todos los capitulos incluidos en la lista episodelist.
             - Un solo capitulo descargado previamente en local.
-
         Para añadir episodios descargados en local, el item debe tener exclusivamente:
             - contentSerieName (o show): Titulo de la serie
             - contentTitle: titulo del episodio para extraer season_and_episode ("1x01 Piloto")
             - title: titulo a mostrar junto al listado de enlaces -findvideos- ("Reproducir video local")
             - infoLabels["tmdb_id"] o infoLabels["imdb_id"]
             - contentType != "movie"
-            - channel = "descargas"
+            - channel = "downloads"
             - url : ruta local al video
-
         @type item: item
         @param item: item que representa la serie a guardar
         @type channel: modulo
         @param channel: canal desde el que se guardara la serie.
             Por defecto se importara item.from_channel o item.channel
-
     """
     logger.info("show=#" + item.show + "#")
 
-
-
-    if item.channel == "descargas":
+    if item.channel == "downloads":
         itemlist = [item.clone()]
 
     else:
@@ -599,35 +566,35 @@ def add_serie_to_library(item, channel=None):
         # Obtiene el listado de episodios
         itemlist = getattr(channel, item.action)(item)
 
-    insertados, sobreescritos, fallidos, path = save_library_tvshow(item, itemlist)
+    insertados, sobreescritos, fallidos, path = save_tvshow(item, itemlist)
 
     if not insertados and not sobreescritos and not fallidos:
-        platformtools.dialog_ok("Biblioteca", "ERROR, la serie NO se ha añadido a la biblioteca",
+        platformtools.dialog_ok("Videoteca", "ERROR, la serie NO se ha añadido a la videoteca",
                                 "No se ha podido obtener ningun episodio")
-        logger.error("La serie %s no se ha podido añadir a la biblioteca. No se ha podido obtener ningun episodio"
+        logger.error("La serie %s no se ha podido añadir a la videoteca. No se ha podido obtener ningun episodio"
                      % item.show)
 
     elif fallidos == -1:
-        platformtools.dialog_ok("Biblioteca", "ERROR, la serie NO se ha añadido a la biblioteca")
-        logger.error("La serie %s no se ha podido añadir a la biblioteca" % item.show)
+        platformtools.dialog_ok("Videoteca", "ERROR, la serie NO se ha añadido a la videoteca")
+        logger.error("La serie %s no se ha podido añadir a la videoteca" % item.show)
 
     elif fallidos > 0:
-        platformtools.dialog_ok("Biblioteca", "ERROR, la serie NO se ha añadido completa a la biblioteca")
-        logger.error("No se han podido añadir %s episodios de la serie %s a la biblioteca" % (fallidos, item.show))
+        platformtools.dialog_ok("Videoteca", "ERROR, la serie NO se ha añadido completa a la videoteca")
+        logger.error("No se han podido añadir %s episodios de la serie %s a la videoteca" % (fallidos, item.show))
 
     else:
-        platformtools.dialog_ok("Biblioteca", "La serie se ha añadido a la biblioteca")
-        logger.info("Se han añadido %s episodios de la serie %s a la biblioteca" %
+        platformtools.dialog_ok("Videoteca", "La serie se ha añadido a la videoteca")
+        logger.info("Se han añadido %s episodios de la serie %s a la videoteca" %
                     (insertados, item.show))
         if config.is_xbmc():
-            if config.get_setting("sync_trakt_new_tvshow", "biblioteca"):
+            if config.get_setting("sync_trakt_new_tvshow", "videolibrary"):
                 import xbmc
-                from platformcode import xbmc_library
-                if config.get_setting("sync_trakt_new_tvshow_wait", "biblioteca"):
-                    # Comprobar que no se esta buscando contenido en la biblioteca de Kodi
+                from platformcode import xbmc_videolibrary
+                if config.get_setting("sync_trakt_new_tvshow_wait", "videolibrary"):
+                    # Comprobar que no se esta buscando contenido en la videoteca de Kodi
                     while xbmc.getCondVisibility('Library.IsScanningVideo()'):
                         xbmc.sleep(1000)
-                # Se lanza la sincronizacion para la biblioteca de Kodi
-                xbmc_library.sync_trakt_kodi()
-                # Se lanza la sincronización para la biblioteca de mitvspain
-                xbmc_library.sync_trakt_mitvspain(path)
+                # Se lanza la sincronizacion para la videoteca de Kodi
+                xbmc_videolibrary.sync_trakt_kodi()
+                # Se lanza la sincronización para la videoteca del addon
+xbmc_videolibrary.sync_trakt_addon(path)

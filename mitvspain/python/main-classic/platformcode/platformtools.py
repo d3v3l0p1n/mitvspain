@@ -401,7 +401,7 @@ def set_context_commands(item, parent_item):
 
         # Añadir a Favoritos
         if num_version_xbmc < 17.0 and \
-                ((item.channel not in ["favoritos", "biblioteca", "ayuda", ""] or item.action in ["update_biblio"]) and
+                ((item.channel not in ["favoritos", "biblioteca", "ayuda", ""] or item.action in ["update_biblioteca"]) and
                  not parent_item.channel == "favoritos"):
             context_commands.append((config.get_localized_string(30155), "XBMC.RunPlugin(%s?%s)" %
                                      (sys.argv[0], item.clone(channel="favoritos", action="addFavourite",
