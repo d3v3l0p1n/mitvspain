@@ -2,7 +2,7 @@
 <channel>
 	<id>pasateatorrent</id>
 	<name>PasateaTorrent</name>
-	<active>false</active>
+	<active>true</active>
 	<adult>false</adult>
 	<language>es</language>
     
@@ -11,7 +11,7 @@
     <bannermenu>https://raw.githubusercontent.com/MiTvSpain/mitvspain/master/bannermenu/pasateatorrent.png</bannermenu>
     <update_url></update_url>
     
-    <version>4</version>
+    <version>5</version>
     <changes>
         <change>
           <date>06/12/2016</date>
