@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
 # MiTvSpain - XBMC Plugin
-
 # ------------------------------------------------------------
 import re
 import urlparse
@@ -22,8 +21,6 @@ IDIOMAS = {'es': 'Español', 'en': 'Inglés', 'la': 'Latino', 'vo': 'VO', 'vos':
 list_idiomas = IDIOMAS.values()
 CALIDADES = ['SD', 'HDiTunes', 'Micro-HD-720p', 'Micro-HD-1080p', '1080p', '720p']
 
-CAPITULOS_DE_ESTRENO_STR = "Capítulos de Estreno"
-
 
 def mainlist(item):
     logger.info()
@@ -38,16 +35,11 @@ def mainlist(item):
     itemlist.append(Item(channel=item.channel, title="Todas las series", action="series",
                          url=urlparse.urljoin(HOST, "listado/"), thumbnail=thumb_series))
     itemlist.append(
-        Item(channel=item.channel, title="Capítulos de estreno", action="home_section", extra=CAPITULOS_DE_ESTRENO_STR,
-             url=HOST, thumbnail=thumb_series))
-    itemlist.append(
-        Item(channel=item.channel, title="Último actualizado", action="home_section", extra="Último Actualizado",
+        Item(channel=item.channel, title="Capítulos estrenados recientemente", action="home_section", extra="Series Online : Capítulos estrenados recientemente",
              url=HOST, thumbnail=thumb_series))
     itemlist.append(Item(channel=item.channel, title="Series más vistas", action="series", extra="Series Más vistas",
                          url=urlparse.urljoin(HOST, "listado-visto/"), thumbnail=thumb_series))
-    itemlist.append(
-        Item(channel=item.channel, title="Series menos vistas", action="home_section", extra="Series Menos vistas",
-             url=HOST, thumbnail=thumb_series))
+    
     itemlist.append(Item(channel=item.channel, title="Últimas fichas creadas", action="series",
                          url=urlparse.urljoin(HOST, "fichas_creadas/"), thumbnail=thumb_series))
     itemlist.append(Item(channel=item.channel, title="Series por género", action="generos",
@@ -200,10 +192,13 @@ def episodios(item):
 
     # logger.debug("fanart: %s" % fanart)
     # logger.debug("plot: %s" % plot)
-
+    logger.debug("DATA="+data)
     episodes = re.findall("<tr.*?href=['\"](?P<url>[^'\"]+).+?>(?P<title>.+?)</a>.*?<td>(?P<flags>.*?)</td>", data,
                           re.MULTILINE | re.DOTALL)
     for url, title, flags in episodes:
+        title = title.replace('<span itemprop="episodeNumber">','')
+        title = title.replace('</span>','')
+        logger.debug("TITLE="+title)
         idiomas = " ".join(["[%s]" % IDIOMAS.get(language, "OVOS") for language in
                             re.findall("banderas/([^\.]+)", flags, re.MULTILINE)])
         filter_lang = idiomas.replace("[", "").replace("]", "").split(" ")
@@ -310,12 +305,13 @@ def play(item):
             # logger.debug(
             #     "Ajax link request: Serie = %s - Temp = %s - Cap = %s - Link = %s" % (serie, temp, cap, linkID))
             ajax_data += httptools.downloadpage(
-                HOST + '/ajax/load_enlace.php?serie=' + serie + '&temp=' + temp + '&cap=' + cap + '&id=' + linkID).data
+                HOST + 'ajax/load_enlace.php?serie=' + serie + '&temp=' + temp + '&cap=' + cap + '&id=' + linkID).data
 
         if ajax_data:
             data = ajax_data
-
-        patron = "onclick='window.open\(\"([^\"]+)\"\);'/>"
+        logger.debug("DATA_LINK="+data)
+        patron = "window.location.href= '([^']+)';"
+        #patron = "onclick='window.open\(\"([^\"]+)\"\);'/>"
         url = scrapertoolsV2.find_single_match(data, patron)
 
     else:
