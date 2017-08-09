@@ -2,7 +2,6 @@
 # ------------------------------------------------------------
 # MiTvSpain 4
 # Copyright 2017
-
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
@@ -86,6 +85,7 @@ def mainlist(item):
                     s.downloadStatus = i.downloadStatus
                       
                 s.title = TITLE_TVSHOW % (STATUS_COLORS[s.downloadStatus], downloadProgress, i.contentSerieName, i.contentChannel)
+
           # Peliculas
           elif i.contentType == "movie" or i.contentType == "video":
               i.title = TITLE_FILE % (STATUS_COLORS[i.downloadStatus], i.downloadProgress, i.contentTitle)
@@ -131,7 +131,7 @@ def mainlist(item):
     return itemlist
 
 def settings(item):
-    ret = platformtools.show_channel_settings()
+    ret = platformtools.show_channel_settings(caption="configuración -- Descargas")
     platformtools.itemlist_refresh()
     return ret
 
@@ -295,7 +295,8 @@ def move_to_libray(item):
           tvshow = Item(channel= "descargas", contentType="tvshow", infoLabels = {"tmdb_id": item.infoLabels["tmdb_id"]})
           library.save_library_tvshow(tvshow, [library_item])
 
-		  
+
+
 def update_json(path, params):
     item = Item().fromjson(filetools.read(path))
     item.__dict__.update(params)
@@ -711,6 +712,8 @@ def get_episodes(item):
     return itemlist 
     
     
+
+      
 def write_json(item):
     logger.info()
   
@@ -727,7 +730,7 @@ def write_json(item):
       if item.__dict__.has_key(name):
         item.__dict__.pop(name)
 
-		path = os.path.join(config.get_setting("downloadlistpath"), str(time.time()) + ".json")
+    path = os.path.join(config.get_setting("downloadlistpath"), str(time.time()) + ".json")
     filetools.write(path, item.tojson())
     item.path = path
     time.sleep(0.1)
